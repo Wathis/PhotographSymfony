@@ -1,0 +1,110 @@
+@font-face {
+    font-family: "Lato-Bold";
+    src: url("../fonts/Lato-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Lato-Regular";
+    src: url("../fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Lato-Italic";
+    src: url("../fonts/Lato-Italic.ttf");
+}
+
+@font-face {
+    font-family: "Lato-Light";
+    src: url("../fonts/Lato-Light.ttf");
+}
+
+@font-face {
+    font-family: "Lato-Black";
+    src: url("../fonts/Lato-Black.ttf");
+}
+
+body, html {
+    height: 100%;
+}
+
+.bg {
+    height:100%;
+    background-image: url("../img/backgroundSnow.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 15%;
+    font-size: 10vmin;
+    font-family: "Lato-Bold";
+    color : white;
+    text-shadow: 0px 0px 5px black;
+
+}
+
+
+.navBigSize {
+    text-shadow: 0px 0px 5px black;
+}
+
+nav .brand-logo {
+    text-shadow: 0px 0px 5px black;
+    margin-left: 2vw;
+}
+
+.description {
+    text-align: center;
+    margin-top: 5%;
+    font-family: "Lato-Light";
+    color : white;
+    text-shadow: 0px 0px 5px black;
+}
+
+
+.navHome {
+    font-family: "Lato-Regular";
+    background-color: transparent;
+    color: white;
+    box-shadow: none;
+}
+
+.active {
+    border-bottom: 2px solid white;
+}
+
+.buttonWhite {
+    color: gray;
+    background-color: white;
+    border-bottom: 3px solid #929292;
+    display: block;
+    height: 40px;
+    width: 100px;
+    margin: auto;
+    margin-top: 8vh;
+    padding-top: 8px;
+}
+
+.socialNetworks {
+    margin-top: 10vh;
+}
+
+.instagram {
+    background: url("../img/instagram.png") no-repeat;
+    background-repeat: no-repeat;
+    height:50px;
+    width:50px;
+    background-position:center;
+}
+
+.facebook {
+    background: url("../img/facebook.png") no-repeat;
+    background-repeat: no-repeat;
+    background-position:center;
+    height:50px;
+    width:50px;
+    padding-left: -30px;
+}
+
