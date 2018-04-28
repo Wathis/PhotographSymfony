@@ -2,7 +2,6 @@
     font-family: "Lato-Bold";
     src: url("../fonts/Lato-Bold.ttf");
 }
-
 @font-face {
     font-family: "Lato-Regular";
     src: url("../fonts/Lato-Regular.ttf");
@@ -27,32 +26,59 @@ body, html {
     height: 100%;
 }
 
+
+
+/**
+
+        General
+
+ */
+
+div {
+    color: #515151;
+}
+
+/**
+
+        FIRST PAGE
+
+ */
+
 .bg {
-    height:100%;
+    height: 100%;
     background-image: url("../img/backgroundSnow.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-h3 {
+.bg h3 {
     text-align: center;
     margin-top: 15%;
     font-size: 10vmin;
     font-family: "Lato-Bold";
     color : white;
     text-shadow: 0px 0px 5px black;
-
 }
-
 
 .navBigSize {
     text-shadow: 0px 0px 5px black;
+
 }
+
 
 nav .brand-logo {
     text-shadow: 0px 0px 5px black;
     margin-left: 2vw;
+    white-space: nowrap;
+}
+
+.content {
+    min-height: 100vh;
+}
+
+nav {
+    background-color: #2C3E50;
 }
 
 .description {
@@ -63,18 +89,16 @@ nav .brand-logo {
     text-shadow: 0px 0px 5px black;
 }
 
-
 .navHome {
     font-family: "Lato-Regular";
     background-color: transparent;
     color: white;
     box-shadow: none;
 }
-
 .active {
+    padding-bottom: 5px;
     border-bottom: 2px solid white;
 }
-
 .buttonWhite {
     color: gray;
     background-color: white;
@@ -85,12 +109,12 @@ nav .brand-logo {
     margin: auto;
     margin-top: 8vh;
     padding-top: 8px;
+    border-top-left-radius: 1%;
+    border-top-right-radius: 1%;
 }
-
 .socialNetworks {
     margin-top: 10vh;
 }
-
 .instagram {
     background: url("../img/instagram.png") no-repeat;
     background-repeat: no-repeat;
@@ -98,7 +122,6 @@ nav .brand-logo {
     width:50px;
     background-position:center;
 }
-
 .facebook {
     background: url("../img/facebook.png") no-repeat;
     background-repeat: no-repeat;
@@ -107,4 +130,138 @@ nav .brand-logo {
     width:50px;
     padding-left: -30px;
 }
+
+.instagram-footer {
+    background: url("../img/instagram-footer.png") no-repeat;
+    background-repeat: no-repeat;
+    height:50px;
+    width:50px;
+    display: inline-block;
+    background-position:center;
+}
+.facebook-footer {
+    background: url("../img/facebook-footer.png") no-repeat;
+    background-repeat: no-repeat;
+    background-position:center;
+    display: inline-block;
+    height:50px;
+    width:50px;
+    padding-left: -30px;
+}
+
+/*
+    Service section
+ */
+
+.separator {
+    margin-top: 10vh;
+}
+
+.services {
+    height: 100%;
+    display: block;
+}
+
+.services h3 {
+    margin-top: 10vh;
+    text-align: center;
+    font-family: Lato-Bold;
+}
+
+.services .information {
+    font-size: 1.5vmax;
+    text-align: center;
+    margin-bottom: 10vh;
+}
+
+.pictograms {
+    margin-top: 5vh;
+    height: 15vh;
+}
+
+.buttonGray {
+    color: white;
+    background-color: #6E6E6E;
+    border-bottom: 3px solid #4B4B4B;
+    display: block;
+    margin: auto;
+    margin-top: 5vh;
+    height: 40px;
+    width: 150px;
+    padding-top: 8px;
+    border-top-left-radius: 1%;
+    border-top-right-radius: 1%;
+}
+
+.buttonGray:hover {
+    background-color: #949191;
+}
+
+.buttonWhiteBorder {
+    color:  #6E6E6E;
+    background-color: white;
+    border: 3px solid #6E6E6E;
+    display: block;
+    margin: auto;
+    height: 40px;
+    width: 150px;
+    padding-top: 6px;
+    border-top-left-radius: 1%;
+    border-top-right-radius: 1%;
+}
+
+.buttonWhiteBorder:hover {
+    background-color: #E6E6E6;
+}
+
+
+.pictogram-center {
+    border-left: 1px solid #515151;
+    border-right: 1px solid #515151;
+}
+
+.consult {
+    margin-top: 5%;
+}
+
+.consult-left h3 {
+    margin-top: 3%;
+    text-align: center;
+    font-family: Lato-Bold;
+}
+
+.consult-left p {
+    text-align: center;
+}
+
+/**
+    FOOTER
+ */
+
+footer {
+    background-color: #F8F8F8;
+    border-top: 1px solid #979797;
+    margin-top: 5%;
+}
+
+.footer-copyright {
+    background-color: red;
+}
+
+h6 {
+    font-size: 1em;
+    font-family: Lato-Bold;
+
+}
+
+.reseau-footer {
+    margin-top: 10%;
+}
+
+.clear {
+    clear: both;
+}
+/** {*/
+    /*border:1px solid black;*/
+/*}*/
 

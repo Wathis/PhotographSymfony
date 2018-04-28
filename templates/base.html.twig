@@ -5,13 +5,74 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <div class="{{ app.request.get('_route') == 'main' ? 'bg'}}">
+        <nav class="{{ app.request.get('_route') == 'main' ? 'navHome' : 'nav'}}">
+            <div class="nav-wrapper col.s12">
+                <a href="{{ path('main') }}" class="brand-logo .col.s12">Nicolas Noel</a>
+                <div class="navBigSize">
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="{{ path('main') }}"><span class="{{ app.request.get('_route') == 'main' ? 'active' }}">ACCUEIL</span></a></li>
+                        <li><a href="{{ path('professionnel') }}"><span class="{{ app.request.get('_route') == 'professionnel' ? 'active' }}">PROFESSIONNEL</span></a></li>
+                        <li><a href="{{ path('particulier') }}"><span class="{{ app.request.get('_route') == 'particulier' ? 'active' }}">PARTICULIER</span></a></li>
+                        <li><a href="{{ path('main') }}"><span class="{{ app.request.get('_route') == 'contact' ? 'active' }}">CONTACT</span></a></li>
+                    </ul>
+                </div>
+                <ul id="slide-out" class="sidenav">
+                    <li><div style="height:20px;"></div></li>
+                    <li><a href="{{ path('main') }}">Accueil</a></li>
+                    <li><a href="{{ path('professionnel') }}">Professionnel</a></li>
+                    <li><a href="{{ path('particulier') }}">Particulier</a></li>
+                    <li><a href="{{ path('main') }}">Contact</a></li>
+                    <li><div class="divider"></div></li>
+                    <li><a class="subheader">Nicolas NOEL</a></li>
+                </ul>
+                <a href="#" data-target="slide-out" class="sidenav-trigger menu">
+                    <i class="large material-icons">menu</i>
+                </a>
+            </div>
+        </nav>
+    {% block firstPage %}{% endblock %}
+    </div>
+    {% block body %}{% endblock %}
+    {% block javascripts %}{% endblock %}
     </body>
+    <footer>
+        <div class="row ">
+            <div class="col s12 m3 l2 offset-l1">
+                <h6>Navigation</h6>
+                <ul>
+                    <li><a href="{{ path('main') }}" class="active">Accueil</a></li>
+                    <li><a href="{{ path('professionnel') }}">Professionnel</a></li>
+                    <li><a href="{{ path('particulier') }}">Particulier</a></li>
+                    <li><a href="{{ path('main') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col s12 m3 l3">
+                <h6>Contact</h6><br />
+                <a href="mailto:contact.photorizz@gmail.com" target="_top">contact.photorizz@gmail.com</a>
+                <div>06.31.47.06.76</div>
+                <a href="{{ path('main') }}">Formulaire de contact</a>
+            </div>
+            <div class="col s12 m3 l3">
+                <h6>Informations</h6><br />
+                <div>Site web développé par Mathis DELAUNAY</div>
+                <a href="mailto:delaunaymathis@yahoo.com" target="_top">delaunaymathis@yahoo.fr</a>
+            </div>
+            <div class="col s12 m3 l3">
+                <h6>Reseaux sociaux</h6><br />
+                <a href="https://www.facebook.com/photorizzo" class="facebook-footer"></a>
+                <a href="https://www.instagram.com/photorizz_/" class="instagram-footer"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="center col s12 l12">© Photo Sport Normandy</div>
+        </div>
+    </footer>
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('js/materialize.js') }}"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
