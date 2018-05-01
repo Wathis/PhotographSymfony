@@ -47,10 +47,10 @@
             </div>
 
             <div class="center-align col l3 m4 s4">
-                <img src="{{ asset("img/landscape.svg") }}" alt="">
+                <img src="{{ asset("img/newspaper.svg") }}" width="60" alt="">
                 <div>
-                    Presentation <br />
-                    anuelle club
+                    Prestations<br />
+                    pour la presse
                 </div>
             </div>
 
@@ -71,8 +71,8 @@
             </div>
             <div class="consult-right col l4 m12 s12">
 
-                <a class="buttonGray center-align" href="#">PROFESSIONNEL</a><br />
-                <a class="buttonWhiteBorder center-align" href="#">PARTICULIER</a>
+                <a class="buttonGray center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">PROFESSIONNEL</a><br />
+                <a class="buttonWhiteBorder center-align" href="{{ path('gallerie',{'category' : 'particulier'}) }}">PARTICULIER</a>
             </div>
         </div>
 

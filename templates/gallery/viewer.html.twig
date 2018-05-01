@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie - Visualisation {% endblock %}
+
+{% block body %}
+
+    <div class="viewer">
+        <div class="header">
+            <h3 class="center-align">{{ albumName }}</h3>
+
+            <div class="separatorLine"></div>
+
+            <h5 class="center-align">
+                {{ 'SECTION POUR ' ~  category | upper ~ 'S' }}
+            </h5>
+        </div>
+
+        <div class="">
+
+            <div class="row show-on-small hide-on-med-and-up">
+                <div class="col center-align s6">
+                    <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
+                    <a href="" class="nextPreviousA">Précédente</a>
+                </div>
+                <div class="col center-align s6">
+                    <a href="" class="nextPreviousA">Suivante</a>
+                    <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col l3 m3 hide-on-small-and-down">
+                    <div class="nextPrevious">
+                        <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
+                        <a href="" class="nextPreviousA">Précédente</a>
+                    </div>
+                </div>
+                <div class="col l6 m6 image">
+                    <img  class="responsive-img" src="{{ asset('img/viewer-photo.png') }}" alt="Photo" width="500">
+                </div>
+                <div class="col l3 m3 hide-on-small-and-down">
+                    <div class="nextPrevious">
+                        <a href="" class="nextPreviousA">Suivante</a>
+                        <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                    </div>
+                </div>
+            </div>
+
+            <div class="containerButtons">
+                <a class="button buttonBlue agrandirButton center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Agrandir la photo</a>
+                <a class="button buttonYellow center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Partager la photo</a>
+            </div>
+
+            <div class="textInput">
+                <div class="messageSelect" style="display: inline-block">Utilisation :</div>
+                <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
+                    <option value="presse">Presse</option>
+                    <option value="particulier">Particulier</option>
+                </select>
+            </div>
+
+            <div class="textInput">
+                <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
+                <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
+                    <option value="Presse">Presse</option>
+                    <option value="Presse">Particulier</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

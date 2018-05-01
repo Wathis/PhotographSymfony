@@ -7,23 +7,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class GalleryController extends Controller
 {
+
     /**
-     * @Route("/galerie/particulier", name="particulier")
+     * @Route("/galerie/{category}", name="gallerie")
      */
-    public function particulier()
+    public function gallerie($category)
     {
         return $this->render('gallery/index.html.twig', [
-            'controller_name' => 'GalleryController'
+            'controller_name' => 'GalleryController',
+            'category' => $category
         ]);
     }
 
     /**
-     * @Route("/galerie/professionnel", name="professionnel")
+     * @Route("/galerie/{category}/album/{albumId}/photo/{photoId}", name="viewer")
      */
-    public function professionnel()
+    public function viewer($category,$albumId,$photoId)
     {
-        return $this->render('gallery/index.html.twig', [
-            'controller_name' => 'GalleryController'
+        return $this->render('gallery/viewer.html.twig', [
+            'controller_name' => 'GalleryController',
+            'albumName' => 'CAEN HB BESANSON',
+            'category' => $category
         ]);
     }
 }

@@ -23,4 +23,12 @@ class MainController extends Controller
             'controller_name' => 'MainController',
         ]);
     }
+
+    /**
+     * @Route("/gestion-site", name="gestion-site")
+     */
+    public function gestionSite()
+    {
+        return $this->render('gestion/index.html.twig');
+    }
 }

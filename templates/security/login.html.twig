@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {% if error.messageKey == 'Invalid credentials.' %}
+                Mot de passe ou nom d'utilisateur incorrect.
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <form action="{{ path('security_login') }}" method="post">
+            <div class="">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class=""/>
+            </div>
+            <div class="">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="_password" class="" />
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+            <button type="submit" class="btn blue" >Connexion</button>
+        </form>
+    </div>
+
+
+{% endblock %}
