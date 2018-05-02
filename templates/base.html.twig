@@ -10,14 +10,14 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-    <div class="{{ app.request.get('_route') == 'main' ? 'bg'}}">
-        <nav class="{{ app.request.get('_route') == 'main' ? 'navHome' : 'nav'}}">
+    <div class="{{ app.request.get('_route') == 'accueil' ? 'bg'}}">
+        <nav class="{{ app.request.get('_route') == 'accueil' ? 'navHome' : 'nav'}}">
             <div class="nav-wrapper col.s12">
                 <a href="{{ path('main') }}" class="brand-logo .col.s12">Nicolas Noel</a>
                 <div class="navBigSize">
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        {% set url_page = app.request.get('_route') %}
-                        <li><a href="{{ path('main') }}"><span class="{{ 'main' in url_page ? 'active' }}">ACCUEIL</span></a></li>
+                        {% set url_page = app.request.uri %}
+                        <li><a href="{{ path('main') }}"><span class="{{ 'accueil' in url_page ? 'active' }}">ACCUEIL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}"><span class="{{ 'professionnel' in url_page ? 'active' }}">PROFESSIONNEL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}"><span class="{{ 'particulier' in url_page ? 'active' }}">PARTICULIER</span></a></li>
                         <li><a href="{{ path('main') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
@@ -25,10 +25,10 @@
                 </div>
                 <ul id="slide-out" class="sidenav">
                     <li><div style="height:20px;"></div></li>
-                    <li><a href="{{ path('main') }}">Accueil</a></li>
+                    <li><a href="{{ path('accueil') }}">Accueil</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
-                    <li><a href="{{ path('main') }}">Contact</a></li>
+                    <li><a href="{{ path('accueil') }}">Contact</a></li>
                     <li><div class="divider"></div></li>
                     <li><a class="subheader">Nicolas NOEL</a></li>
                 </ul>
@@ -47,10 +47,10 @@
             <div class="col s12 m3 l2 offset-l1">
                 <h6>Navigation</h6>
                 <ul>
-                    <li><a href="{{ path('main') }}" class="active">Accueil</a></li>
+                    <li><a href="{{ path('accueil') }}" class="active">Accueil</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
-                    <li><a href="{{ path('main') }}">Contact</a></li>
+                    <li><a href="{{ path('accueil') }}">Contact</a></li>
                     <li><a href="{{ path('gestion-site') }}">Gerer</a></li>
                 </ul>
             </div>

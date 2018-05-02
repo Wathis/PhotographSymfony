@@ -47,7 +47,7 @@
             </div>
 
             <div class="containerButtons">
-                <a class="button buttonBlue agrandirButton center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Agrandir la photo</a>
+                <a class="button buttonBlue center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Agrandir la photo</a>
                 <a class="button buttonYellow center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Partager la photo</a>
             </div>
 
@@ -62,10 +62,20 @@
             <div class="textInput">
                 <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
                 <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
-                    <option value="Presse">Presse</option>
-                    <option value="Presse">Particulier</option>
+                    <option value="Presse">1200 x 800</option>
+                    <option value="Presse">1000 x 700</option>
                 </select>
             </div>
+
+            <div class="prixPhoto">
+                Prix de la photo : 12 €
+            </div>
+
+            <div class="containerButtons">
+                <a class="button buttonGreen agrandirButton center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Ajouter au panier</a>
+                <a class="button buttonGray center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Acheter</a>
+            </div>
+
         </div>
     </div>
 
