@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Album - {{ category }}{% endblock %}
+
+{% block body %}
+
+    <div class="gallery">
+
+        <div class="header">
+
+            <div class="retourGallerie">
+                <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt; Retour album</a>
+            </div>
+            <h3 class="center-align">CAEN HB BESANSON</h3>
+
+            <div class="separatorLine"></div>
+
+            <h5 class="center-align">
+                {{ 'SECTION POUR ' ~  category | upper ~ 'S' }}
+            </h5>
+
+        </div>
+
+        <div class="container">
+            <div class="album hide-on-small-and-down">
+                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                    <img src="{{ asset('img/c1.png') }}" alt="">
+                </a>
+                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                    <img src="{{ asset('img/c2.png') }}" alt="">
+                </a>
+                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                    <img src="{{ asset('img/c3.png') }}" alt="">
+                </a>
+                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                    <img src="{{ asset('img/c4.png') }}" alt="">
+                </a>
+                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                    <img src="{{ asset('img/c5.png') }}" alt="">
+                </a>
+            </div>
+
+            <div class="hide-on-med-and-up">
+                <div class="row" >
+                    <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
+                        <img src="{{ asset('img/c4.png') }}" alt="">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+{% endblock %}

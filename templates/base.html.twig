@@ -17,10 +17,11 @@
                 <div class="navBigSize">
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         {% set url_page = app.request.uri %}
-                        <li><a href="{{ path('main') }}"><span class="{{ 'accueil' in url_page ? 'active' }}">ACCUEIL</span></a></li>
+                        <li><a href="{{ path('accueil') }}"><span class="{{ 'accueil' in url_page ? 'active' }}">ACCUEIL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}"><span class="{{ 'professionnel' in url_page ? 'active' }}">PROFESSIONNEL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}"><span class="{{ 'particulier' in url_page ? 'active' }}">PARTICULIER</span></a></li>
-                        <li><a href="{{ path('main') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
+                        <li><a href="{{ path('accueil') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
+                        <li><a href="{{ path('panier') }}"><img class="panier" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt=""></a></li>
                     </ul>
                 </div>
                 <ul id="slide-out" class="sidenav">
@@ -29,6 +30,7 @@
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
                     <li><a href="{{ path('accueil') }}">Contact</a></li>
+                    <li><a href="{{ path('panier') }}">Mon panier</a></li>
                     <li><div class="divider"></div></li>
                     <li><a class="subheader">Nicolas NOEL</a></li>
                 </ul>
@@ -78,4 +80,5 @@
     <script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('js/materialize.js') }}"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 </html>

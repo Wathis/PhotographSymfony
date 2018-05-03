@@ -6,7 +6,11 @@
 
     <div class="viewer">
         <div class="header">
-            <h3 class="center-align">{{ albumName }}</h3>
+
+            <div class="retourGallerie">
+                <a href="{{ path('album',{'category' : category,'albumId' : albumId }) }}" class="nextPreviousA">&lt; Retour album</a>
+            </div>
+            <h3 class="center-align" style="margin-top: 0;">{{ albumName }}</h3>
 
             <div class="separatorLine"></div>
 
@@ -51,6 +55,7 @@
                 <a class="button buttonYellow center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Partager la photo</a>
             </div>
 
+            {% if category == 'professionnel' %}
             <div class="textInput">
                 <div class="messageSelect" style="display: inline-block">Utilisation :</div>
                 <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
@@ -58,6 +63,7 @@
                     <option value="particulier">Particulier</option>
                 </select>
             </div>
+            {% endif %}
 
             <div class="textInput">
                 <div class="messageSelect" style="display: inline-block">Format de la photo :</div>

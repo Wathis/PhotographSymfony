@@ -14,10 +14,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MainController extends Controller
 {
+
     /**
      * @Route("/", name="main")
      */
     public function index()
+    {
+        return $this->redirectToRoute('accueil');
+    }
+    /**
+     * @Route("/accueil", name="accueil")
+     */
+    public function accueil()
     {
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',

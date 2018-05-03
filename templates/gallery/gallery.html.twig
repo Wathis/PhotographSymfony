@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie - {{ category }}{% endblock %}
+
+{% block body %}
+
+    <div class="gallery">
+
+        <div class="header">
+            <h3 class="center-align">GALERIE DE PHOTOS</h3>
+
+            <div class="separatorLine"></div>
+
+            <h5 class="center-align">
+                {{ 'SECTION POUR ' ~  category | upper ~ 'S' }} - ALBUMS
+            </h5>
+
+            <div class="sort center-align">
+                <div class="sortBy">Trier par date </div>
+                <form style="display: inline-block" id="formDate" action="{{ path('gallerie',{'category' : category}) }}">
+                    <input name="dateGallery" class="browser-default inputDate" type="date" onchange="changeDate()" />
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+                <div class="photoContainer col l4 m6 s12">
+                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}" style='background-image:url({{ asset('img/c1.png') }})'></a>
+                    <div class="center-align album-title">CAEN HB BESANCON</div>
+                </div>
+                <div class="photoContainer col l4 m6 s12">
+                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}"  style='background-image:url({{ asset('img/c1.png') }})'></a>
+                    <div class="center-align album-title">CAEN HB BESANCON</div>
+                </div>
+                <div class="photoContainer col l4 m6 s12">
+                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}"  style='background-image:url({{ asset('img/c1.png') }})'></a>
+                    <div class="center-align album-title">CAEN HB BESANCON</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

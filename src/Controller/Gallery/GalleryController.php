@@ -13,9 +13,22 @@ class GalleryController extends Controller
      */
     public function gallerie($category)
     {
-        return $this->render('gallery/index.html.twig', [
+        return $this->render('gallery/gallery.html.twig', [
             'controller_name' => 'GalleryController',
             'category' => $category
+        ]);
+    }
+
+    /**
+     * @Route("/galerie/{category}/album/{albumId}", name="album")
+     */
+    public function album($category,$albumId)
+    {
+        return $this->render('gallery/album.html.twig', [
+            'controller_name' => 'GalleryController',
+            'albumName' => 'CAEN HB BESANSON',
+            'category' => $category,
+            'albumId' => $albumId
         ]);
     }
 
@@ -27,7 +40,9 @@ class GalleryController extends Controller
         return $this->render('gallery/viewer.html.twig', [
             'controller_name' => 'GalleryController',
             'albumName' => 'CAEN HB BESANSON',
-            'category' => $category
+            'category' => $category,
+            'albumId' => $albumId,
+            'photoId' => $photoId
         ]);
     }
 }
