@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="container gestion">
+        <h3 style="text-align: center">Mes albums</h3>
+
+        {{ form_start(form) }}
+        {{ form_widget(form ) }}
+        {{ form_end(form) }}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom album</th>
+                    <th>Date de création</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for album in albums %}
+                    <tr>
+                        <td>{{ album.albumName }}</td>
+                        <td>{{ album.albumDate | date("m/d/Y") }}</td>
+                        <td>
+                            <a href="{{ path('gererAlbum',{'albumId' : album.id}) }}" title="Gerer photos"><i class="small material-icons gray-text center-align" width="20px">build</i></a>
+                            <a href="{{ path('deleteAlbum',{'id' : album.id}) }}" title="Supprimer l'album"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}

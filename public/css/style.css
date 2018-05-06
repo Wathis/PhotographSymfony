@@ -589,6 +589,20 @@ h6 {
     margin-top: 5vh;
 }
 
+/**
+
+    GESTION
+ */
+
+.gestion h3 {
+    font-family: Lato-Regular;
+}
+
+.inputDate {
+    height: 100px;
+    background-color: red;
+}
+
 /** {*/
 /*border:1px solid black;*/
 /*}*/

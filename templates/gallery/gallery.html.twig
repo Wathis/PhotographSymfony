@@ -24,21 +24,20 @@
         </div>
 
         <div class="container">
-
-            <div class="row">
-                <div class="photoContainer col l4 m6 s12">
-                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}" style='background-image:url({{ asset('img/c1.png') }})'></a>
-                    <div class="center-align album-title">CAEN HB BESANCON</div>
-                </div>
-                <div class="photoContainer col l4 m6 s12">
-                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}"  style='background-image:url({{ asset('img/c1.png') }})'></a>
-                    <div class="center-align album-title">CAEN HB BESANCON</div>
-                </div>
-                <div class="photoContainer col l4 m6 s12">
-                    <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : 2,'category' : category}) }}"  style='background-image:url({{ asset('img/c1.png') }})'></a>
-                    <div class="center-align album-title">CAEN HB BESANCON</div>
-                </div>
-            </div>
+            {% set i = 0 %}
+            {% for album in albums %}
+                {% if i % 3 == 0 %}
+                    <div class="row">
+                {% endif %}
+                        {% set i = i + 1 %}
+                        <div class="photoContainer col l4 m6 s12">
+                            <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : album.id,'category' : category}) }}" style='background-image:url({{ asset('uploads/photos/' ~ miniatures[album.id] ) }})'></a>
+                            <div class="center-align album-title">{{ album.albumName }}</div>
+                        </div>
+                {% if i % 3 == 0 %}
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 

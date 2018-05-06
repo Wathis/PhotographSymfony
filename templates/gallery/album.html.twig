@@ -9,7 +9,7 @@
         <div class="header">
 
             <div class="retourGallerie">
-                <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt; Retour album</a>
+                <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt;Retour album</a>
             </div>
             <h3 class="center-align">CAEN HB BESANSON</h3>
 
@@ -23,29 +23,21 @@
 
         <div class="container">
             <div class="album hide-on-small-and-down">
-                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                    <img src="{{ asset('img/c1.png') }}" alt="">
-                </a>
-                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                    <img src="{{ asset('img/c2.png') }}" alt="">
-                </a>
-                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                    <img src="{{ asset('img/c3.png') }}" alt="">
-                </a>
-                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                    <img src="{{ asset('img/c4.png') }}" alt="">
-                </a>
-                <a class="tile" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                    <img src="{{ asset('img/c5.png') }}" alt="">
-                </a>
+                {% for photo in album.photos %}
+                    <a class="tile" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
+                        <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                    </a>
+                {% endfor %}
             </div>
 
             <div class="hide-on-med-and-up">
-                <div class="row" >
-                    <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : 2,'category' : category,'photoId' : 2}) }}">
-                        <img src="{{ asset('img/c4.png') }}" alt="">
-                    </a>
-                </div>
+                {% for photo in album.photos %}
+                    <div class="row" >
+                        <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
+                            <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                        </a>
+                    </div>
+                {% endfor %}
             </div>
 
         </div>

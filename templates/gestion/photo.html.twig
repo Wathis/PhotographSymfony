@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="retourGallerie">
+        <a href="{{ path('gestion-site') }}" class="nextPreviousA">&lt; Retour albums</a>
+    </div>
+
+    <div class="container gestion">
+        <h3 style="text-align: center">{{ album.albumName }}</h3>
+
+        {{ form_start(form) }}
+        {{ form_widget(form ) }}
+        {{ form_end(form) }}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Aperçu</th>
+                    <th>Nom photo</th>
+                    <th>Date de création</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for photo in album.photos %}
+                    <tr>
+                        <td><img src="{{ asset('uploads/photos/' ~ photo.photo) }}" width="50px" alt="photo"></td>
+                        <td>{{ photo.photoName }}</td>
+                        <td>{{ photo.photoDate | date("m/d/Y") }}</td>
+                        <td>
+                            <a href="{{ path('deletePhoto',{'albumId' : album.id,'photoId' : photo.id}) }}" title="Supprimer la photo"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}

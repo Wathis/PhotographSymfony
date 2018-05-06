@@ -2,7 +2,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-
+    photos_watermarked_directory: '%kernel.project_dir%/public/upload/watermarked'
+    photos_directory: '%kernel.project_dir%/public/uploads/photos'
+    img_directory: '%kernel.project_dir%/public/img'
 services:
     # default configuration for services in *this* file
     _defaults:
