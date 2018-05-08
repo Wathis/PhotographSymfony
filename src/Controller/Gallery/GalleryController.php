@@ -2,6 +2,7 @@
 
 namespace App\Controller\Gallery;
 
+use App\Entity\Format;
 use App\Entity\Photo;
 use Proxies\__CG__\App\Entity\Album;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,11 +58,19 @@ class GalleryController extends Controller
         $photo = $this->getDoctrine()
             ->getRepository(Photo::class)
             ->find($photoId);
+        list($width,$height) = getimagesize($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $photo->getPhoto());
+        $formats = $this->getDoctrine()
+            ->getRepository(Format::class)
+            ->findAll();
+
         return $this->render('gallery/viewer.html.twig', [
             'controller_name' => 'GalleryController',
             'category' => $category,
             'photo' => $photo,
-            'album' => $album
+            'album' => $album,
+            'photoWidth' => $width,
+            'photoHeight' => $height,
+            'formats' => $formats
         ]);
     }
 }

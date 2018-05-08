@@ -21,7 +21,14 @@
                         <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}"><span class="{{ 'professionnel' in url_page ? 'active' }}">PROFESSIONNEL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}"><span class="{{ 'particulier' in url_page ? 'active' }}">PARTICULIER</span></a></li>
                         <li><a href="{{ path('accueil') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
-                        <li><a href="{{ path('panier') }}"><img class="panier" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt=""></a></li>
+                        <li><a href="{{ path('panier') }}">
+                                {% if app.session.get('panier') == null %}
+                                    <img class="panier" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt="">
+                                {% else %}
+                                    <img class="panier" src="{{ asset('img/shopping-basket-alert.svg') }}" width="30px" alt="">
+                                {% endif %}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <ul id="slide-out" class="sidenav">

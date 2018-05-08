@@ -9,7 +9,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Album;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MainController extends Controller
@@ -32,11 +34,4 @@ class MainController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/gestion-site", name="gestion-site")
-     */
-    public function gestionSite()
-    {
-        return $this->render('gestion/index.html.twig');
-    }
 }

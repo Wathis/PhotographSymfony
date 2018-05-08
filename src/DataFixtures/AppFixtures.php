@@ -1,6 +1,7 @@
 <?php
 namespace App\DataFixtures;
 
+use App\Entity\Format;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,13 +24,34 @@ class AppFixtures extends Fixture
             $user->setUsername($username);
             $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
             $user->setEmail($email);
-            $user->setRoles($roles);
 
             $manager->persist($user);
             $this->addReference($username, $user);
         }
 
+        foreach ($this->getFormats() as [$ratio_taille, $prix, $category]) {
+            $format = new Format();
+            $format->setRatioTaille($ratio_taille);
+            $format->setPrix($prix);
+            $format->setCategory($category);
+            $manager->persist($format);
+        }
+
         $manager->flush();
+    }
+
+    private function getFormats(): array
+    {
+        return [
+            // $formatData = [$ratio_taille, , $prix, $category];
+            [0.25, 50   ,'professionnel'],
+            [0.50, 90   ,'professionnel'],
+            [0.75, 130  ,'professionnel'],
+            [1   , 150  ,'professionnel'],
+
+            [0.5 , 10   ,'particulier'],
+            [1   , 30   ,'particulier'],
+        ];
     }
 
     private function getUserData(): array

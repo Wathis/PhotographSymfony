@@ -19,6 +19,16 @@
             </h5>
         </div>
 
+
+        <div class="container">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">{{ flashMessage }}</div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">{{ flashMessage }}</div>
+            {% endfor %}
+        </div>
+
         <div class="">
 
             <div class="row show-on-small hide-on-med-and-up">
@@ -55,33 +65,46 @@
                 <a class="button buttonBlue center-align" href="{{ asset('uploads/photos/' ~ photo.photo) }}">Agrandir la photo</a>
                 <a class="button buttonYellow center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Partager la photo</a>
             </div>
+            <form id="formBuyPhoto" method="post" action="{{ path('ajouterPanier') }}">
+                    <div class="textInput">
+                        <div class="messageSelect" style="display: inline-block">Utilisation :</div>
+                        <select onchange="changeCategory(value)" style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
+                            <option value="professionnel" {{ category == 'professionnel' ? 'selected' : '' }}>Professionnel</option>
+                            <option  value="particulier" {{ category == 'particulier' ? 'selected' : '' }}>Particulier</option>
+                        </select>
+                    </div>
 
-            {% if category == 'professionnel' %}
-            <div class="textInput">
-                <div class="messageSelect" style="display: inline-block">Utilisation :</div>
-                <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
-                    <option value="presse">Presse</option>
-                    <option value="particulier">Particulier</option>
-                </select>
-            </div>
-            {% endif %}
+                <input type="text" name="photoId" value="{{ photo.id }}" hidden>
 
-            <div class="textInput">
-                <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
-                <select style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
-                    <option value="Presse">1200 x 800</option>
-                    <option value="Presse">1000 x 700</option>
-                </select>
-            </div>
+                <div class="textInput">
+                    <div id="formatProfessionnel" {{ category == 'professionnel' ? '' : 'hidden' }}>
+                        <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
+                        <select style="display: inline-block;" class="browser-default inputSelect"  name="{{category == 'particulier' ? '' : 'format' }}"  id="selectProfessionnel">
+                            {% for format in formats %}
+                                {% if format.category == 'professionnel' %}
+                                    <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div id="formatParticulier" {{ category == 'particulier' ? '' : 'hidden' }}>
+                        <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
+                        <select style="display: inline-block;" class="browser-default inputSelect" name="{{category == 'particulier' ? 'format' : '' }}" id="selectParticulier">
+                            {% for format in formats %}
+                                {% if format.category == 'particulier' %}
+                                    <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
 
-            <div class="prixPhoto">
-                Prix de la photo : 12 €
-            </div>
-
-            <div class="containerButtons">
-                <a class="button buttonGreen agrandirButton center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Ajouter au panier</a>
-                <a class="button buttonGray center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Acheter</a>
-            </div>
+                <input id="acheter" name="acheter" class="browser-default" type="text" hidden value="false">
+                <div class="containerButtons">
+                    <a class="button buttonGreen agrandirButton  center-align" onclick="submitPhoto()">Ajouter au panier</a>
+                    <a class="button buttonGray center-align" onclick="clickAcheter()">Acheter</a>
+                </div>
+            </form>
 
         </div>
     </div>
