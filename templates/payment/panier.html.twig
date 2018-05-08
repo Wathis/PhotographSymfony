@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+    <div class="container" style="min-height: 80vh">
+
+        {% if panier | length > 0 %}
+            <h4 class="center-align" style="font-family: Lato-Bold" >VOTRE PANIER</h4>
+
+            <div class="containerTableau">
+                <table class="tableauPanier">
+
+                    <thead>
+                        <tr>
+                            <th>Miniature</th>
+                            <th>Album</th>
+                            <th>Dimensions</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% set total = 0 %}
+                        {% for row in panier %}
+                            <tr>
+                                <td><img src="{{ asset('uploads/photos/' ~ row.photo.photo) }}" width="80px" alt=""></td>
+                                <td>{{ row.photo.album.albumName }}</td>
+                                <td>{{ (row.format.ratioTaille * dimensions[row.photo.id].width) | number_format |replace({"," : " "}) }} x {{ (row.format.ratioTaille *  dimensions[row.photo.id].height) |number_format |replace({"," : " "})}} </td>
+                                <td>{{ row.format.prix }} €</td>
+                                {% set total = total + row.format.prix %}
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                    <tfoot>
+                        <tr class="noStyle">
+                            <td class="noStyle"></td>
+                            <td class="noStyle"></td>
+                            <td>Total</td>
+                            <td>{{ total }} €</td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+
+            <div class="containerButtons buttonsPanier">
+                <a class="button buttonRed center-align" href="{{ path('abandonnerPanier') }}">Abandonner</a>
+                <a class="button buttonGreen center-align" href="{{ path('panier') }}">Acheter</a>
+            </div>
+        {% else %}
+            <h5 class="center-align" style="font-family: Lato-Bold;margin-top: 10vh;" >Panier vide</h5>
+        {% endif %}
+        </div>
+{% endblock %}

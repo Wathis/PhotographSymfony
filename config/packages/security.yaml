@@ -1,0 +1,40 @@
+security:
+    encoders:
+        App\Entity\User: bcrypt
+
+    providers:
+        database_users:
+            entity: { class: App\Entity\User, property: username }
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            # les urls auxquels s'appliquent ce firewall, dans ce cas, ce sont toutes les urls
+            pattern: ^/
+
+            # La connexion n'est pas requise sur toutes les pages
+            # par exemple la page d'accueil
+            anonymous: true
+
+            form_login:
+                # Le nom de la route de la page de connexion
+                check_path: security_login
+                # Le nom de la route où se trouve le formulaire de connexion
+                # Si un utilisateur tente d'acceder à une page protégée sans en avoir les droits
+                # il sera redirigé sur cette page
+                login_path: security_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: security_redirection
+
+            logout:
+                path: security_logout
+                target: main
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    access_control:
+        - { path: '^/gestion-site', roles: ROLE_ADMIN }
