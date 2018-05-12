@@ -4,13 +4,27 @@ namespace App\Controller\Payment;
 
 use App\Entity\Format;
 use App\Entity\Photo;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Exception\PayPalConnectionException;
+use PayPal\Rest\ApiContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentController extends Controller
 {
+
     /**
      * @Route("/panier", name="panier")
      */
@@ -55,6 +69,88 @@ class PaymentController extends Controller
         }
         $session->set('panier', null);
         return $this->redirectToRoute('accueil');
+    }
+
+    /**
+     * @Route("/achat", name="achat")
+     */
+    public function achat() {
+        $apiContext = new ApiContext(
+            new OAuthTokenCredential(
+                $this->getParameter('paypal_api_key'),
+                $this->getParameter('paypal_secret')
+            )
+        );
+        $payment = Payment::get($_GET["paymentId"],$apiContext);
+        $execution = (new PaymentExecution())
+            ->setPayerId($_GET["PayerID"])
+            ->setTransactions($payment->getTransactions());
+        try {
+            $payment->execute($execution,$apiContext);
+            print_r("Paiement effectué");
+        } catch (PayPalConnectionException $e) {
+            var_dump(json_decode($e->getData()));
+        }
+        return $this->render('payment/acheter.html.twig', [
+            'controller_name' => 'PaymentController'
+        ]);
+    }
+
+    /**
+     * @Route("/acheter", name="acheter")
+     */
+    public function buy() {
+        $apiContext = new ApiContext(
+            new OAuthTokenCredential(
+                $this->getParameter('paypal_api_key'),
+                $this->getParameter('paypal_secret')
+            )
+        );
+
+        $payment = new Payment();
+        $payment->setIntent("sale");
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl($this->generateUrl('achat',array(),UrlGeneratorInterface::ABSOLUTE_URL) );
+        $redirectUrls->setCancelUrl($this->generateUrl('panier',array(),UrlGeneratorInterface::ABSOLUTE_URL));
+        $payment->setRedirectUrls($redirectUrls);
+        $payment->setPayer(
+            (new Payer())->setPaymentMethod('paypal')
+        );
+
+        $list = new ItemList();
+        $item = (new Item())
+            ->setPrice("12")
+            ->setQuantity(1)
+            ->setName("Nom du produit")
+            ->setCurrency("EUR");
+        $list->addItem($item);
+
+        $details = (new Details())
+            ->setSubtotal(12);
+
+        $amout = (new Amount())
+            ->setTotal(12)
+            ->setDetails($details)
+            ->setCurrency("EUR");
+
+        $transaction = (new Transaction())
+            ->setItemList($list)
+            ->setDescription('Achat de photo')
+            ->setCustom("api_verification_exemple")
+            ->setAmount($amout);
+
+        $payment->setTransactions(array(
+            $transaction
+        ));
+        try {
+            $payment->create($apiContext);
+            return $this->redirect($payment->getApprovalLink());
+        } catch (PayPalConnectionException $e) {
+            var_dump(json_decode($e->getData()));
+        }
+        return $this->render('payment/acheter.html.twig', [
+            'controller_name' => 'PaymentController'
+        ]);
     }
 
     /**

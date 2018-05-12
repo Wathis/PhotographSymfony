@@ -55,9 +55,11 @@ class GalleryController extends Controller
         $album = $this->getDoctrine()
             ->getRepository(Album::class)
             ->find($albumId);
+
         $photo = $this->getDoctrine()
             ->getRepository(Photo::class)
             ->find($photoId);
+
         list($width,$height) = getimagesize($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $photo->getPhoto());
         $formats = $this->getDoctrine()
             ->getRepository(Format::class)
