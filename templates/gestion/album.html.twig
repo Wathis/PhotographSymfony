@@ -3,7 +3,7 @@
 {% block body %}
 
 
-    <div style="min-height:100vh" class="container gestion">
+    <div style="min-height:100vh" class="container content gestion">
         <h3 style="text-align: center">Mes albums</h3>
 
         {{ form_start(form) }}
@@ -23,7 +23,7 @@
                 {% for album in albums %}
                     <tr>
                         <td>{{ album.albumName }}</td>
-                        <td>{{ album.albumDate | date("m/d/Y") }}</td>
+                        <td>{{ album.albumDate | date("d/m/Y") }}</td>
                         <td>
                             <a href="{{ path('gererAlbum',{'albumId' : album.id}) }}" title="Gerer photos"><i class="small material-icons gray-text center-align" width="20px">build</i></a>
                             <a href="{{ path('deleteAlbum',{'id' : album.id}) }}" title="Supprimer l'album"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>

@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="gallery">
+    <div class="gallery content">
 
         <div class="header">
             <h3 class="center-align">GALERIE DE PHOTOS</h3>
@@ -17,7 +17,7 @@
 
             <div class="sort center-align">
                 <div class="sortBy">Trier par date </div>
-                <form style="display: inline-block" id="formDate" action="{{ path('gallerie',{'category' : category}) }}">
+                <form style="display: inline-block" id="formDate" method="POST" action="{{ path('gallerie',{'category' : category}) }}">
                     <input name="dateGallery" class="browser-default inputDate" type="date" onchange="changeDate()" />
                 </form>
             </div>
@@ -31,7 +31,7 @@
                 {% endif %}
                         {% set i = i + 1 %}
                         <div class="photoContainer col l4 m6 s12">
-                            <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : album.id,'category' : category}) }}" style='background-image:url({{ asset('uploads/photos/' ~ miniatures[album.id] ) }})'></a>
+                            <a class="photoAlbumGallery" href="{{ path('album',{'albumId' : album.id,'category' : category}) }}" style='background-image:url({{ asset('uploads/watermarked/' ~ miniatures[album.id] ) }})'></a>
                             <div class="center-align album-title">{{ album.albumName }}</div>
                         </div>
                 {% if i % 3 == 0 %}

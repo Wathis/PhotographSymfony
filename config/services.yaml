@@ -5,6 +5,7 @@ parameters:
     photos_watermarked_directory: '%kernel.project_dir%/public/upload/watermarked'
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
     img_directory: '%kernel.project_dir%/public/img'
+    watermarked_photos_directory: '%kernel.project_dir%/public/uploads/watermarked'
     paypal_secret: EOXK4Qh_7ybFNvzuhEezA66lndhVsZvJ10ZX5gGsW2ZJRheEn83O_Dh85vX1EewM9gz8g0uarxrgz_Qa
     paypal_api_key: AaQMppoLgWn8VxUw0owT8b63X-qNlM3mp_IWXnJ3ZHauhj31XMP_0EfCaw2ZlQLZwFueMp7VIA7HVLow
 services:

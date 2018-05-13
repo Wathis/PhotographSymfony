@@ -80,7 +80,7 @@ nav .brand-logo {
 }
 
 .content {
-    min-height: 100vh;
+    min-height: 70vh;
 }
 
 nav {
@@ -284,13 +284,11 @@ nav {
  */
 
 footer {
-    background-color: #F8F8F8;
+    background-color:#F8F8F8;
     border-top: 1px solid #979797;
     margin-top: 5%;
-}
+    padding: 0px;
 
-.footer-copyright {
-    background-color: red;
 }
 
 h6 {
@@ -433,7 +431,7 @@ h6 {
 
 .nextPreviousA {
     color: #515151;
-    font-family: Lato-Regular;
+    font-family: Lato-Bold;
 }
 
 .nextPrevious {

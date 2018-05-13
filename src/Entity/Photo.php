@@ -26,6 +26,13 @@ class Photo
     private $photo;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\File(mimeTypes={ "image/png","image/jpeg" })
+     */
+    private $watermark;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $photo_name;
@@ -66,6 +73,17 @@ class Photo
     public function setPhoto($photo): self
     {
         $this->photo = $photo;
+        return $this;
+    }
+
+    public function getWatermark()
+    {
+        return $this->watermark;
+    }
+
+    public function setWatermark($watermark): self
+    {
+        $this->watermark = $watermark;
         return $this;
     }
 

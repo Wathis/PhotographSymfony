@@ -29,7 +29,7 @@ class GestionController extends Controller
         $album->setAlbumDate(new \DateTime());
 
         $form = $this->createFormBuilder($album)
-            ->add('albumName', TextType::class)
+            ->add('albumName', TextType::class, array('label' => "Nom d'album"))
             ->add('save', SubmitType::class, array('label' => 'Ajouter'))
             ->getForm();
 
@@ -40,7 +40,6 @@ class GestionController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($album);
             $entityManager->flush();
-
             return $this->redirectToRoute('gestion-site');
         }
 
@@ -69,8 +68,8 @@ class GestionController extends Controller
         $photo->setPhotoDate(new \DateTime());
         $photo->setAlbum($album);
         $form = $this->createFormBuilder($photo)
-            ->add('photoName', TextType::class)
-            ->add('photo', FileType::class, array('label' => 'Image'))
+            ->add('photoName', TextType::class, array('label' => "Nom de la photo"))
+            ->add('photo', FileType::class, array('label' => 'Photo'))
             ->add('save', SubmitType::class, array('label' => 'Ajouter'))
             ->getForm();
         $form->handleRequest($request);
@@ -80,12 +79,28 @@ class GestionController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $photo->getPhoto();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $extension = $file->guessExtension();
+            $fileName = md5(uniqid()).'.'. $extension;
             $file->move(
                 $this->getParameter('photos_directory'),
                 $fileName
             );
+
+            //Creation du watermark
+            $filePathWatermark = $this->getParameter('img_directory') . DIRECTORY_SEPARATOR . 'watermark.png';
+            $watermark = imagecreatefrompng($filePathWatermark);
+            //Changement de l'opacité
+            $opacity = 0.6;
+            imagealphablending($watermark, false);
+            imagesavealpha($watermark, true);
+            imagefilter($watermark, IMG_FILTER_COLORIZE, 0,0,0,127*$opacity);
+            //Collage du watermark
+            $im = imagecreatefromjpeg($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $fileName);
+            imagecopy($im, $watermark, imagesx($im) - imagesx($watermark) - 10, imagesy($im) - imagesy($watermark) - 10, 0, 0, imagesx($watermark), imagesy($watermark));
+            $fileWatermarkName = md5(uniqid()).'.'. $extension;
+            imagejpeg($im,$this->getParameter('watermarked_photos_directory') . DIRECTORY_SEPARATOR . $fileWatermarkName);
             $photo->setPhoto($fileName);
+            $photo->setWatermark($fileWatermarkName);
             $entityManager->persist($photo);
             $entityManager->flush();
             return new RedirectResponse($this->generateUrl('gererAlbum',array('albumId' => $albumId)));
@@ -104,8 +119,12 @@ class GestionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($photo);
         $filePath = $this->getParameter("photos_directory") . DIRECTORY_SEPARATOR . $photo->getPhoto();
+        $filePathWatermark = $this->getParameter("watermarked_photos_directory") . DIRECTORY_SEPARATOR . $photo->getWatermark();
         if(file_exists($filePath)) {
             unlink($filePath);
+        }
+        if (file_exists($filePathWatermark)) {
+            unlink($filePathWatermark);
         }
         $entityManager->flush();
         return new RedirectResponse($this->generateUrl('gererAlbum',array('albumId' => $albumId)));

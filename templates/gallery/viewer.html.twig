@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="viewer">
+    <div class="viewer content">
         <div class="header">
 
             <div class="retourGallerie">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col l6 m6 image">
 
-                    <img  class="responsive-img" src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="Photo" width="500">
+                    <img  class="responsive-img" src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="Photo" width="500">
                 </div>
                 <div class="col l3 m3 hide-on-small-and-down">
                     <div class="nextPrevious">
@@ -62,7 +62,7 @@
             </div>
 
             <div class="containerButtons">
-                <a class="button buttonBlue center-align" href="{{ asset('uploads/photos/' ~ photo.photo) }}">Agrandir la photo</a>
+                <a class="button buttonBlue center-align" href="{{ asset('uploads/watermarked/' ~ photo.watermark) }}">Agrandir la photo</a>
                 <a class="button buttonYellow center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Partager la photo</a>
             </div>
             <form id="formBuyPhoto" method="post" action="{{ path('ajouterPanier') }}">

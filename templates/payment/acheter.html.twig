@@ -3,53 +3,22 @@
 {% block title %}Mon panier{% endblock %}
 
 {% block body %}
-    <div id="paypal-button-container"></div>
-{% endblock %}
+    <div class="content">
+        <div class="container">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">{{ flashMessage }}</div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">{{ flashMessage }}</div>
+            {% endfor %}
+        </div>
 
-{% block javascripts %}
-    {#<script src="https://www.paypalobjects.com/api/checkout.js"></script>#}
-
-    {#<script>#}
-        {#paypal.Button.render({#}
-
-            {#env: 'sandbox', // sandbox | production#}
-
-            {#// Show the buyer a 'Pay Now' button in the checkout flow#}
-            {#commit: true,#}
-
-            {#// payment() is called when the button is clicked#}
-            {#payment: function() {#}
-
-                {#// Set up a url on your server to create the payment#}
-                {#var CREATE_URL = '{{ path('acheter') }}';#}
-
-                {#// Make a call to your server to set up the payment#}
-                {#return paypal.request.post(CREATE_URL)#}
-                    {#.then(function(res) {#}
-                        {#return res.paymentID;#}
-                    {#});#}
-            {#},#}
-
-            {#// onAuthorize() is called when the buyer approves the payment#}
-            {#onAuthorize: function(data, actions) {#}
-
-                {#// Set up a url on your server to execute the payment#}
-                {#var EXECUTE_URL = '/demo/checkout/api/paypal/payment/execute/';#}
-
-                {#// Set up the data you need to pass to your server#}
-                {#var data = {#}
-                    {#paymentID: data.paymentID,#}
-                    {#payerID: data.payerID#}
-                {#};#}
-
-                {#// Make a call to your server to execute the payment#}
-                {#return paypal.request.post(EXECUTE_URL, data)#}
-                    {#.then(function (res) {#}
-                        {#window.alert('Payment Complete!');#}
-                    {#});#}
-            {#}#}
-
-        {#}, '#paypal-button-container');#}
-    {#</script>#}
+        {% if isPaymentValidated %}
+            <h4 class="text-center">Liens pour telecharger les photos</h4>
+            {% for link in links %}
+                <a href="{{ asset('uploads/photos/' ~ link) }}" download>Lien</a>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 {% endblock %}

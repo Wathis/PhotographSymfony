@@ -4,12 +4,12 @@
 
 {% block body %}
 
-    <div class="gallery">
+    <div class="gallery content">
 
         <div class="header">
 
             <div class="retourGallerie">
-                <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt;Retour album</a>
+                <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt; Retour album</a>
             </div>
             <h3 class="center-align">CAEN HB BESANSON</h3>
 
@@ -25,7 +25,7 @@
             <div class="album hide-on-small-and-down">
                 {% for photo in album.photos %}
                     <a class="tile" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
-                        <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                        <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
                     </a>
                 {% endfor %}
             </div>
@@ -34,7 +34,7 @@
                 {% for photo in album.photos %}
                     <div class="row" >
                         <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
-                            <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                            <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
                         </a>
                     </div>
                 {% endfor %}

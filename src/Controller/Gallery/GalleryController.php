@@ -16,12 +16,18 @@ class GalleryController extends Controller
      */
     public function gallerie($category)
     {
-        $albums = $this->getDoctrine()
-            ->getRepository(Album::class)
-            ->findAll();
+        if (isset($_POST["dateGallery"]) && !empty($_POST["dateGallery"])){
+            $albums = $this->getDoctrine()
+                ->getRepository(Album::class)
+                ->findByDate($_POST["dateGallery"]);
+        } else {
+            $albums = $this->getDoctrine()
+                ->getRepository(Album::class)
+                ->findAll();
+        }
         $miniatures = array();
         foreach ($albums as $album) {
-            $miniatures[$album->getId()] = count($album->getPhotos()) > 0 ? $album->getPhotos()[0]->getPhoto() : "pas-apercu.png";
+            $miniatures[$album->getId()] = count($album->getPhotos()) > 0 ? $album->getPhotos()[0]->getWatermark() : "pas-apercu.png";
         }
         return $this->render('gallery/gallery.html.twig', [
             'controller_name' => 'GalleryController',
@@ -30,7 +36,6 @@ class GalleryController extends Controller
             'miniatures' => $miniatures
         ]);
     }
-
     /**
      * @Route("/galerie/{category}/album/{albumId}", name="album")
      */

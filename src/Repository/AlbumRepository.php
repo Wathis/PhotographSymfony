@@ -19,6 +19,14 @@ class AlbumRepository extends ServiceEntityRepository
         parent::__construct($registry, Album::class);
     }
 
+    public function findByDate($date) {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.album_date >= :date')
+            ->setParameter('date',$date)
+            ->getQuery()
+            ->execute();
+    }
+
 //    /**
 //     * @return Album[] Returns an array of Album objects
 //     */

@@ -3,7 +3,7 @@
 {% block title %}Mon panier{% endblock %}
 
 {% block body %}
-    <div class="container" style="min-height: 80vh">
+    <div class="container content" style="min-height: 80vh">
 
         {% if panier | length > 0 %}
             <h4 class="center-align" style="font-family: Lato-Bold" >VOTRE PANIER</h4>
@@ -26,7 +26,7 @@
                             <tr>
                                 <td><img src="{{ asset('uploads/photos/' ~ row.photo.photo) }}" width="80px" alt=""></td>
                                 <td>{{ row.photo.album.albumName }}</td>
-                                <td>{{ (row.format.ratioTaille * dimensions[row.photo.id].width) | number_format |replace({"," : " "}) }} x {{ (row.format.ratioTaille *  dimensions[row.photo.id].height) |number_format |replace({"," : " "})}} </td>
+                                <td>{{ row.width }} x {{ row.height }}</td>
                                 <td>{{ row.format.prix }} €</td>
                                 {% set total = total + row.format.prix %}
                             </tr>

@@ -37,7 +37,13 @@
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
                     <li><a href="{{ path('accueil') }}">Contact</a></li>
-                    <li><a href="{{ path('panier') }}">Mon panier</a></li>
+                    <li>
+                        {% if app.session.get('panier') == null %}
+                            <a href="{{ path('panier') }}">Mon panier</a>
+                        {% else %}
+                            <a href="{{ path('panier') }}">Mon panier (!)</a>
+                        {% endif %}
+                    </li>
                     <li><div class="divider"></div></li>
                     <li><a class="subheader">Nicolas NOEL</a></li>
                 </ul>
@@ -79,7 +85,7 @@
                 <a href="https://www.instagram.com/photorizz_/" class="instagram-footer"></a>
             </div>
         </div>
-        <div class="row">
+        <div class="row footer-copyright">
             <div class="center col s12 l12">© 2018 Photo Sport Normandy</div>
         </div>
     </footer>

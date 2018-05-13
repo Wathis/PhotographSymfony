@@ -25,49 +25,54 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class PaymentController extends Controller
 {
 
+    public function getPanierFromSession() {
+        $panierSession = $this->get('session')->get('panier');
+        $repositoryPhoto =  $this->getDoctrine()->getRepository(Photo::class);
+        $repositoryFormat =  $this->getDoctrine()->getRepository(Format::class);
+        $panier = array();
+        if ($panierSession !== null) {
+            foreach ($panierSession as $photoId => $formats) {
+                $photo = $repositoryPhoto->find($photoId);
+                list($width,$height) = getimagesize($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $photo->getPhoto());
+                foreach ($formats as $format) {
+                    $format = $repositoryFormat->find($format);
+                    $panier[] = array(
+                        "photo" => $photo,
+                        "format" => $format,
+                        "width" => (int) ($format->getRatioTaille() * $width),
+                        "height" => (int) ($format->getRatioTaille() * $height)
+                    );
+                }
+            }
+        }
+        return $panier;
+    }
+
     /**
      * @Route("/panier", name="panier")
      */
     public function panier()
     {
-        $panier = $this->get('session')->get('panier');
-        $repositoryPhoto =  $this->getDoctrine()->getRepository(Photo::class);
-        $repositoryFormat =  $this->getDoctrine()->getRepository(Format::class);
-        $result = array();
-        $photoSize = array();
-        if ($panier !== null) {
-            foreach ($panier as $photoId => $formats) {
-                $photo = $repositoryPhoto->find($photoId);
-                list($width,$height) = getimagesize($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $photo->getPhoto());
-                $photoSize[$photoId] = array(
-                    'width' => $width,
-                    'height' => $height
-                );
-                foreach ($formats as $format) {
-                    $format = $repositoryFormat->find($format);
-                    $result[] = array(
-                        "photo" => $photo,
-                        "format" => $format
-                    );
-                }
-            }
-        }
+        $panier = $this->getPanierFromSession();
         return $this->render('payment/panier.html.twig', [
             'controller_name' => 'PaymentController',
-            'panier'=> $result,
-            'dimensions' => $photoSize
+            'panier'=> $panier
         ]);
+    }
+
+    public function viderPanier() {
+        $session = $this->get('session');
+        if ($session == null ) {
+            $session->start();
+        }
+        $session->set('panier', null);
     }
 
     /**
      * @Route("/photos/abandonner-panier", name="abandonnerPanier")
      */
     public function abandonnerPanier() {
-        $session = $this->get('session');
-        if ($session == null ) {
-            $session->start();
-        }
-        $session->set('panier', null);
+        $this->viderPanier();
         return $this->redirectToRoute('accueil');
     }
 
@@ -81,18 +86,55 @@ class PaymentController extends Controller
                 $this->getParameter('paypal_secret')
             )
         );
+        if (!(isset($_GET["paymentId"]) && isset($_GET["PayerID"]))) {
+            throw new \Exception('Quelque chose s\' est mal passé !');
+        }
         $payment = Payment::get($_GET["paymentId"],$apiContext);
+        $transactions = $payment->getTransactions();
         $execution = (new PaymentExecution())
             ->setPayerId($_GET["PayerID"])
-            ->setTransactions($payment->getTransactions());
+            ->setTransactions($transactions);
+        $paymentValidated = false;
+        $links = array();
         try {
-            $payment->execute($execution,$apiContext);
-            print_r("Paiement effectué");
+            $paymentUniqueId = $this->get("session")->get("paymentUniqueId");
+            if ($paymentUniqueId == $transactions[0]->getCustom()){
+                $payment->execute($execution,$apiContext);
+                $paymentValidated = true;
+                $panier = $this->getPanierFromSession();
+                //Resize the photo
+                foreach ($panier as $photo) {
+                    $filePathFullPhoto = $this->getParameter("photos_directory")
+                        . DIRECTORY_SEPARATOR
+                        . $photo["photo"]->getPhoto();
+                    $ext = pathinfo($filePathFullPhoto, PATHINFO_EXTENSION);
+                    $fileName = hash("sha256",$photo["photo"]->getPhoto() . $photo["format"]->getId()) . '.' . $ext ;;
+                    $filePath = $this->getParameter("photos_directory")
+                        . DIRECTORY_SEPARATOR
+                        . $fileName;
+                    list($width,$height) = getimagesize($filePathFullPhoto);
+                    if (!file_exists($filePath)) {
+                        $src = imagecreatefromjpeg($filePathFullPhoto);
+                        $dst = imagecreatetruecolor($photo["width"], $photo["height"]);
+                        imagecopyresampled($dst, $src, 0, 0, 0, 0, $photo["width"], $photo["height"], $width, $height);
+                        imagejpeg ( $dst,  $filePath );
+                    }
+                    $links[] = $fileName;
+                }
+                $this->viderPanier();
+                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès');
+            } else {
+                $this->get('session')->getFlashBag()->add('error','Erreur lors du paiement, paiement non effectué');
+            }
         } catch (PayPalConnectionException $e) {
             var_dump(json_decode($e->getData()));
+            throw new \Exception('Erreur lors du paiement');
         }
+
         return $this->render('payment/acheter.html.twig', [
-            'controller_name' => 'PaymentController'
+            'controller_name' => 'PaymentController',
+            'links' => $links,
+            'isPaymentValidated' => $paymentValidated
         ]);
     }
 
@@ -118,25 +160,33 @@ class PaymentController extends Controller
         );
 
         $list = new ItemList();
-        $item = (new Item())
-            ->setPrice("12")
-            ->setQuantity(1)
-            ->setName("Nom du produit")
-            ->setCurrency("EUR");
-        $list->addItem($item);
+        $panier = $this->getPanierFromSession();
+        $prixTotal = 0;
+        foreach ($panier as $product) {
+            $item = (new Item())
+                ->setName($product["photo"]->getPhotoName() . ' ' . $product["width"] . 'x' . $product["height"])
+                ->setCurrency("EUR")
+                ->setPrice($product["format"]->getPrix())
+                ->setQuantity(1);
+            $prixTotal += $product["format"]->getPrix();
+            $list->addItem($item);
+        }
 
         $details = (new Details())
-            ->setSubtotal(12);
+            ->setSubtotal($prixTotal);
 
         $amout = (new Amount())
-            ->setTotal(12)
+            ->setTotal($prixTotal)
             ->setDetails($details)
             ->setCurrency("EUR");
+
+        $uniqueId = md5(uniqid());
+        $this->get("session")->set("paymentUniqueId",$uniqueId);
 
         $transaction = (new Transaction())
             ->setItemList($list)
             ->setDescription('Achat de photo')
-            ->setCustom("api_verification_exemple")
+            ->setCustom($uniqueId)
             ->setAmount($amout);
 
         $payment->setTransactions(array(
