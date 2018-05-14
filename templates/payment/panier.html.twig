@@ -24,7 +24,7 @@
                         {% set total = 0 %}
                         {% for row in panier %}
                             <tr>
-                                <td><img src="{{ asset('uploads/photos/' ~ row.photo.photo) }}" width="80px" alt=""></td>
+                                <td><img src="{{ asset('uploads/watermarked/' ~ row.photo.watermark) }}" width="80px" alt=""></td>
                                 <td>{{ row.photo.album.albumName }}</td>
                                 <td>{{ row.width }} x {{ row.height }}</td>
                                 <td>{{ row.format.prix }} €</td>
