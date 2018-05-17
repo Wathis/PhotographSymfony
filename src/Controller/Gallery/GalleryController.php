@@ -65,6 +65,14 @@ class GalleryController extends Controller
             ->getRepository(Photo::class)
             ->find($photoId);
 
+        $next = $this->getDoctrine()
+            ->getRepository(Photo::class)
+            ->next($albumId,$photoId);
+
+        $previous = $this->getDoctrine()
+            ->getRepository(Photo::class)
+            ->previous($albumId,$photoId);
+
         list($width,$height) = getimagesize($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $photo->getPhoto());
         $formats = $this->getDoctrine()
             ->getRepository(Format::class)
@@ -77,7 +85,9 @@ class GalleryController extends Controller
             'album' => $album,
             'photoWidth' => $width,
             'photoHeight' => $height,
-            'formats' => $formats
+            'formats' => $formats,
+            'next' => $next,
+            'previous' => $previous
         ]);
     }
 }

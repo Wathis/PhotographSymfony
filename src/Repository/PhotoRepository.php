@@ -19,23 +19,28 @@ class PhotoRepository extends ServiceEntityRepository
         parent::__construct($registry, Photo::class);
     }
 
-//    /**
-//     * @return Photo[] Returns an array of Photo objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
+    public function next($albumId, $id) {
+        $sql = "select min(id) id from photo where id > :id and photo_album_id = :albumId";
+        $params["id"] = $id;
+        $params["albumId"] = $albumId;
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        $result = $stmt->fetch();
+        return $result["id"] == null ? 0 : $result["id"];
+    }
+
+    public function previous($albumId, $id) {
+        $sql = "select max(id) id from photo where id < :id and photo_album_id = :albumId";
+        $params["id"] = $id;
+        $params["albumId"] = $albumId;
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+        $result = $stmt->fetch();
+        return $result["id"] == null ? 0 : $result["id"];
+    }
 
     public function findByAlbumId($albumId)
     {

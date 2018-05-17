@@ -2,6 +2,7 @@
 
 namespace App\Controller\Payment;
 
+use App\Entity\Client;
 use App\Entity\Format;
 use App\Entity\Photo;
 use PayPal\Api\Amount;
@@ -16,6 +17,8 @@ use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Exception\PayPalConnectionException;
 use PayPal\Rest\ApiContext;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,9 +80,37 @@ class PaymentController extends Controller
     }
 
     /**
+     * @Route("/acheter/email", name="email")
+     */
+    public function email(Request $request) {
+        $client = new Client();
+
+        $form = $this->createFormBuilder($client)
+            ->add('email', TextType::class, array("label" => false,'attr' => array('class' => 'emailInput browser-default','placeholder' => 'Email')))
+            ->add('save', SubmitType::class, array('label' => 'Continuer achat','attr' => array('class' => 'noInputStyle button buttonGreen center-align')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $client = $form->getData();
+            $this->get('session')->set("email",($client->getEmail()));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($client);
+            $entityManager->flush();
+            return $this->redirectToRoute('acheter');
+        }
+
+        return $this->render('payment/email.html.twig', [
+            'controller_name' => 'PaymentController',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/achat", name="achat")
      */
-    public function achat() {
+    public function achat(\Swift_Mailer $mailer) {
         $apiContext = new ApiContext(
             new OAuthTokenCredential(
                 $this->getParameter('paypal_api_key'),
@@ -121,8 +152,21 @@ class PaymentController extends Controller
                     }
                     $links[] = $fileName;
                 }
+                $email = $this->get('session')->get("email");
+                $message = (new \Swift_Message('Achat de photos'))
+                    ->setFrom('delaunaymathis@yahoo.com')
+                    ->setTo($email)
+                    ->setBody(
+                        $this->renderView(
+                            'emails/payment_done.html.twig',
+                            array('name' => "Mon nom")
+                        ),
+                        'text/html'
+                    )
+                ;
+                $mailer->send($message);
                 $this->viderPanier();
-                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès');
+                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès, email envoyé à l\' addresse ' . $email);
             } else {
                 $this->get('session')->getFlashBag()->add('error','Erreur lors du paiement, paiement non effectué');
             }

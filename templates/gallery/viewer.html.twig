@@ -33,20 +33,26 @@
 
             <div class="row show-on-small hide-on-med-and-up">
                 <div class="col center-align s6">
-                    <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
-                    <a href="" class="nextPreviousA">Précédente</a>
+                    {% if previous != 0 %}
+                        <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
+                        <a href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : previous}) }}" class="nextPreviousA">Précédente</a>
+                    {% endif %}
                 </div>
                 <div class="col center-align s6">
-                    <a href="" class="nextPreviousA">Suivante</a>
-                    <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                    {% if next != 0 %}
+                        <a href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : next}) }}" class="nextPreviousA">Suivante</a>
+                        <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col l3 m3 hide-on-small-and-down">
                     <div class="nextPrevious">
-                        <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
-                        <a href="" class="nextPreviousA">Précédente</a>
+                        {% if previous != 0 %}
+                            <img src="{{ asset('img/previous.png') }}" alt="" class="previousImg" width="20">
+                            <a href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : previous}) }}" class="nextPreviousA">Précédente</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col l6 m6 image">
@@ -55,8 +61,10 @@
                 </div>
                 <div class="col l3 m3 hide-on-small-and-down">
                     <div class="nextPrevious">
-                        <a href="" class="nextPreviousA">Suivante</a>
-                        <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                        {% if next != 0 %}
+                            <a href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : next}) }}" class="nextPreviousA">Suivante</a>
+                            <img src="{{ asset('img/next.png') }}" class="nextImg" alt="" width="20">
+                        {% endif %}
                     </div>
                 </div>
             </div>

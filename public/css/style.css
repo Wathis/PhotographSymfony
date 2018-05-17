@@ -551,6 +551,25 @@ h6 {
         PANIER
  */
 
+.noInputStyle {
+    appearance: none;
+    border:none;
+    outline: none;
+    margin-top: 5vh;
+}
+
+.emailInput {
+    color: #283E52;
+    border: none;
+    height: 35px;
+    width: 200px;
+    text-align: center;
+    display: inline-block;
+    margin: auto;
+    margin-top: 5vh;
+    border: 1px solid #283E52;
+}
+
 .containerTableau {
     overflow-x:auto;
 }
