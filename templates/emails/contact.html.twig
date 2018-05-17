@@ -1,23 +1,13 @@
 <html>
 
     <body>
-        <img src="https://image.ibb.co/kz69Yy/logo.png" width="100" alt="">
-        <h2 class="title">Photo Sport Normandy</h2>
+        <h2 class="title">Message de {{ nom }}</h2>
 
-        <p>Voici les liens pour télécharger vos images : </p>
+        <p>Vous avez reçu un message de {{ nom }} depuis votre formulaire de contact sur votre site Photo Sport Normandy.</p>
 
-        <ul>
-            {% for link in links %}
-                {% set url = absolute_url('uploads/photos/' ~ link)  %}
-                <li><a href="{{ absolute_url('uploads/photos/' ~ link) }}" download>{{ url  | length > 50 ? url | slice (0, 50) ~ '...' : url}}</a></li>
-            {% endfor %}
-        </ul>
-
-        <p>
-            Merci pour votre achat,<br />
-            Cordialement,<br />
-            Photo Sport Normandy.<br />
-        </p>
+        <p>Email : {{ email }}</p>
+        <p>Message : <br /><p/>
+        <p>{{ message }}</p>
 
         <p class="footer">© Copyright Photo Sport Normandy {{  "now" | date("Y") }}</p>
 

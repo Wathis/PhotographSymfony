@@ -20,7 +20,7 @@
                         <li><a href="{{ path('accueil') }}"><span class="{{ 'accueil' in url_page ? 'active' }}">ACCUEIL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}"><span class="{{ 'professionnel' in url_page ? 'active' }}">PROFESSIONNEL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}"><span class="{{ 'particulier' in url_page ? 'active' }}">PARTICULIER</span></a></li>
-                        <li><a href="{{ path('accueil') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
+                        <li><a href="{{ path('contact') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
                         <li><a href="{{ path('panier') }}">
                                 {% if app.session.get('panier') == null %}
                                     <img class="panier" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt="">
@@ -36,7 +36,7 @@
                     <li><a href="{{ path('accueil') }}">Accueil</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
-                    <li><a href="{{ path('accueil') }}">Contact</a></li>
+                    <li><a href="{{ path('contact') }}">Contact</a></li>
                     <li>
                         {% if app.session.get('panier') == null %}
                             <a href="{{ path('panier') }}">Mon panier</a>
@@ -64,7 +64,7 @@
                     <li><a href="{{ path('accueil') }}" class="active">Accueil</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
-                    <li><a href="{{ path('accueil') }}">Contact</a></li>
+                    <li><a href="{{ path('contact') }}">Contact</a></li>
                     <li><a href="{{ path('gestion-site') }}">Gerer</a></li>
                 </ul>
             </div>

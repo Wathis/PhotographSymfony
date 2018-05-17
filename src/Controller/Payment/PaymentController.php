@@ -154,24 +154,24 @@ class PaymentController extends Controller
                 }
                 $email = $this->get('session')->get("email");
                 $message = (new \Swift_Message('Achat de photos'))
-                    ->setFrom('delaunaymathis@yahoo.com')
+                    ->setFrom('photosportnormandy@gmail.com')
                     ->setTo($email)
                     ->setBody(
                         $this->renderView(
                             'emails/payment_done.html.twig',
-                            array('name' => "Mon nom")
+                            array('links' => $links)
                         ),
                         'text/html'
                     )
                 ;
                 $mailer->send($message);
                 $this->viderPanier();
-                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès, email envoyé à l\' addresse ' . $email);
+                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès, photos envoyées à l\'addresse ' . $email);
             } else {
                 $this->get('session')->getFlashBag()->add('error','Erreur lors du paiement, paiement non effectué');
             }
         } catch (PayPalConnectionException $e) {
-            var_dump(json_decode($e->getData()));
+//            var_dump(json_decode($e->getData()));
             throw new \Exception('Erreur lors du paiement');
         }
 

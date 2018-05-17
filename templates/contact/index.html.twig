@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger">{{ flashMessage }}</div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success">{{ flashMessage }}</div>
+        {% endfor %}
+
+        <h2  style="font-family: Lato-Bold;text-align: center">Formulaire de contact</h2>
+
+        <div style="clear:both;"></div>
+
+        <div style="text-align: center">
+            {{ form_start(form) }}
+            {{ form_widget(form ) }}
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+
+{% endblock %}
