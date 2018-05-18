@@ -11,7 +11,12 @@
         <h3 style="text-align: center">{{ album.albumName }}</h3>
 
         {{ form_start(form) }}
-        {{ form_widget(form ) }}
+        <div class="center-align" style="margin-bottom: 5vh;">
+            {{ form_widget(form.photoName) }}
+            {{ form_widget(form.photo) }}
+            <label for="form_photo" class="button buttonBlue">Choisir photo</label>
+            {{ form_widget(form.add) }}
+        </div>
         {{ form_end(form) }}
 
         <table>

@@ -7,7 +7,10 @@
         <h3 style="text-align: center">Mes albums</h3>
 
         {{ form_start(form) }}
-        {{ form_widget(form ) }}
+        <div class="center-align" style="margin-bottom: 5vh;">
+            {{ form_widget(form.albumName) }}
+            {{ form_widget(form.add) }}
+        </div>
         {{ form_end(form) }}
 
         <table>

@@ -615,6 +615,19 @@ h6 {
     GESTION
  */
 
+.champGerer {
+    display: inline-block;
+    width: 50%;
+}
+
+.choisirPhoto {
+    display: none;
+}
+
+.buttonGerer {
+    display: inline-block;
+}
+
 .gestion h3 {
     font-family: Lato-Regular;
 }

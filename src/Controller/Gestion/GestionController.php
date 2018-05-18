@@ -29,8 +29,15 @@ class GestionController extends Controller
         $album->setAlbumDate(new \DateTime());
 
         $form = $this->createFormBuilder($album)
-            ->add('albumName', TextType::class, array('label' => "Nom d'album"))
-            ->add('save', SubmitType::class, array('label' => 'Ajouter'))
+            ->add('albumName', TextType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Nom de l\'album',
+                        'class' => 'champGerer emailInput browser-default'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter l\'album','attr' => array('class' => 'buttonGerer noInputStyle button buttonGreen')))
             ->getForm();
 
         $form->handleRequest($request);
@@ -68,9 +75,23 @@ class GestionController extends Controller
         $photo->setPhotoDate(new \DateTime());
         $photo->setAlbum($album);
         $form = $this->createFormBuilder($photo)
-            ->add('photoName', TextType::class, array('label' => "Nom de la photo"))
-            ->add('photo', FileType::class, array('label' => 'Photo'))
-            ->add('save', SubmitType::class, array('label' => 'Ajouter'))
+            ->add('photoName', TextType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Nom de la photo',
+                        'class' => 'emailInput champGerer browser-default'
+                    )
+                ))
+            ->add('photo', FileType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Nom de la photo',
+                        'class' => 'choisirPhoto browser-default'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter la photo','attr' => array('class' => 'buttonGerer noInputStyle button buttonGreen')))
             ->getForm();
         $form->handleRequest($request);
 
