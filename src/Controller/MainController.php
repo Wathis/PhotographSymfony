@@ -28,23 +28,8 @@ class MainController extends Controller
     /**
      * @Route("/accueil", name="accueil")
      */
-    public function accueil(\Swift_Mailer $mailer)
+    public function accueil()
     {
-        $message = (new \Swift_Message('Achat de photos'))
-            ->setFrom('photosportnomandy@gmail.com')
-            ->setTo("delaunaymathis@yahoo.fr")
-            ->setBody(
-                $this->renderView(
-                    'emails/payment_done.html.twig',
-                    array('links' => array(
-                        "http://liens",
-                        "http://liens"
-                    ))
-                ),
-                'text/html'
-            )
-        ;
-        $mailer->send($message);
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);
