@@ -1,13 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'gestion/nav.html.twig' %}
 
 {% block body %}
-
-
     <div style="min-height:100vh" class="container content gestion">
         <h3 style="text-align: center">Mes albums</h3>
 
         {{ form_start(form) }}
-        <div class="center-align" style="margin-bottom: 5vh;">
+        <div class="center-align row" style="margin-bottom: 5vh;">
             {{ form_widget(form.albumName) }}
             {{ form_widget(form.add) }}
         </div>

@@ -18,7 +18,13 @@
 
         <div style="text-align: center">
             {{ form_start(form) }}
-            {{ form_widget(form ) }}
+            <div class="row">
+                {{ form_widget(form.nom ) }}
+                {{ form_widget(form.email ) }}
+            </div>
+            <div class="row">
+                {{ form_widget(form.message ) }}
+            </div>
             {{ form_end(form) }}
         </div>
 

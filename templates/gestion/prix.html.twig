@@ -1,0 +1,46 @@
+{% extends 'gestion/nav.html.twig' %}
+
+{% block body %}
+    <div style="min-height:100vh" class="container content gestion">
+        <h3 style="text-align: center">Tarifications</h3>
+
+        {{ form_start(form) }}
+        <div class="center-align" style="margin-bottom: 5vh;">
+            <div class="row">
+                {{ form_widget(form.categorie) }}
+                {{ form_widget(form.ratioTaille) }}
+                {{ form_widget(form.prix) }}
+                {{ form_widget(form.add) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Ratio de taille</th>
+                    <th>Prix</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for format in formats %}
+                    <tr>
+                        <td>{{ format.categorie |capitalize }}</td>
+                        <td>{{ format.ratioTaille }}</td>
+                        <td>{{ format.prix }} €</td>
+                        <td>
+                            <a href="{{ path('deleteFormat',{'id' : format.id}) }}" title="Supprimer le format"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}

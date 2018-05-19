@@ -637,6 +637,60 @@ h6 {
     background-color: red;
 }
 
+/**
+        CONTACT
+ */
+
+.contactInput {
+    color: #283E52;
+    border: none;
+    height: 35px;
+    display: inline-block;
+    margin-top: 5vh;
+    border: 1px solid #283E52;
+}
+
+.contactInput {
+    color: #283E52;
+    border: none;
+    height: 35px;
+    display: inline-block;
+    margin-top: 5vh;
+    border: 1px solid #283E52;
+}
+
+.contactTextArea {
+    min-height: 20vh;
+    resize: none;
+}
+
+
+.nav-gerer {
+    background-color: transparent;
+    box-shadow: none;
+    border: 0px;
+}
+
+.activeTab {
+    border-bottom: 2px solid rgb(44,62,80);
+}
+
+.lienGerer a {
+    color:black !important;
+    font-family: Lato-Regular;
+}
+.lienGerer a:hover {
+    background-color: red;
+}
+.lienGerer a:focus {
+    background: transparent !important;
+}
+.lienGerer:hover {
+    background: rgb(248,248,248);
+}
+.rangeInput {
+    margin-top: 28px !important;
+}
 /** {*/
 /*border:1px solid black;*/
 /*}*/

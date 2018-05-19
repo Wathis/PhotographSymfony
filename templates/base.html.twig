@@ -54,6 +54,8 @@
         </nav>
     {% block firstPage %}{% endblock %}
     </div>
+
+    {% block navgerer %}{% endblock %}
     {% block body %}{% endblock %}
     </body>
     <footer>
@@ -65,7 +67,7 @@
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
                     <li><a href="{{ path('contact') }}">Contact</a></li>
-                    <li><a href="{{ path('gestion-site') }}">Gerer</a></li>
+                    <li><a href="{{ path('gestion-site-albums') }}">Gerer</a></li>
                 </ul>
             </div>
             <div class="col s12 m3 l3">

@@ -29,7 +29,7 @@ class Format
     /**
      * @ORM\Column(type="string")
      */
-    private $category;
+    private $categorie;
 
     public function getId()
     {
@@ -63,17 +63,17 @@ class Format
     /**
      * @return mixed
      */
-    public function getCategory()
+    public function getCategorie()
     {
-        return $this->category;
+        return $this->categorie;
     }
 
     /**
-     * @param mixed $category
+     * @param mixed $categorie
      */
-    public function setCategory($category)
+    public function setCategorie($categorie)
     {
-        $this->category = $category;
+        $this->categorie = $categorie;
     }
 
 }

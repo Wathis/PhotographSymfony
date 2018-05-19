@@ -89,7 +89,7 @@
                         <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
                         <select style="display: inline-block;" class="browser-default inputSelect"  name="{{category == 'particulier' ? '' : 'format' }}"  id="selectProfessionnel">
                             {% for format in formats %}
-                                {% if format.category == 'professionnel' %}
+                                {% if format.categorie == 'professionnel' %}
                                     <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
                                 {% endif %}
                             {% endfor %}
@@ -99,7 +99,7 @@
                         <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
                         <select style="display: inline-block;" class="browser-default inputSelect" name="{{category == 'particulier' ? 'format' : '' }}" id="selectParticulier">
                             {% for format in formats %}
-                                {% if format.category == 'particulier' %}
+                                {% if format.categorie == 'particulier' %}
                                     <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
                                 {% endif %}
                             {% endfor %}

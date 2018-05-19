@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class MainController extends Controller
-{
+
+class MainController extends Controller {
 
     /**
      * @Route("/contact", name="contact")
@@ -29,10 +29,33 @@ class MainController extends Controller
 
         $defaultData = array('message' => 'Type your message here');
         $form = $this->createFormBuilder($defaultData)
-            ->add('nom', TextType::class,array('label' => false,'attr' => array('class' => 'browser-default')))
-            ->add('email', EmailType::class,array('label' => false,'attr' => array('class' => 'browser-default')))
-            ->add('message', TextareaType::class,array('label' => false,'attr' => array('class' => 'browser-default')))
-            ->add('envoyer', SubmitType::class,array('attr' => array('class' => 'noInputStyle button buttonGreen center-align')))
+            ->add('nom', TextType::class,array(
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Nom',
+                    'class' => 'col l5 m5 s12  contactInput browser-default'
+                )
+            ))
+            ->add('email', EmailType::class,array(
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Email',
+                    'class' => 'col l5 m5 s12 offset-l2 offset-m2 contactInput browser-default'
+                )
+            ))
+            ->add('message', TextareaType::class,array(
+                'label' => false,
+                'data' => '',
+                'attr' => array(
+                    'placeholder' => 'Entrez votre message',
+                    'class' => 'contactTextArea contactInput browser-default',
+                )
+            ))
+            ->add('envoyer', SubmitType::class,array(
+                'attr' => array(
+                    'class' => 'noInputStyle button buttonGreen center-align'
+                )
+            ))
             ->getForm();
 
         $form->handleRequest($request);

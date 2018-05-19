@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
             $format = new Format();
             $format->setRatioTaille($ratio_taille);
             $format->setPrix($prix);
-            $format->setCategory($category);
+            $format->setCategorie($category);
             $manager->persist($format);
         }
 
