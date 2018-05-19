@@ -100,7 +100,6 @@ class PaymentController extends Controller
                 'email' => $client->getEmail()
             ));
             if (count($clientSearched)  == 0) {
-                var_dump("NO CLIENT");
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($client);
                 $entityManager->flush();

@@ -55,6 +55,7 @@ class GestionController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($album);
             $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success',"Album " . $album->getAlbumName() . " créé");
             return $this->redirectToRoute('gestion-site-albums');
         }
 
@@ -121,6 +122,7 @@ class GestionController extends Controller
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($format);
                 $entityManager->flush();
+                $this->get('session')->getFlashBag()->add('success','Tarification ajoutée');
                 return $this->redirectToRoute('gestion-site-prix');
             }else {
                 $this->get('session')->getFlashBag()->add('error','Erreur de saisie');
@@ -137,9 +139,15 @@ class GestionController extends Controller
      * @Route("/gestion-site/delete-album/{id}", name="deleteAlbum")
      */
     public function deleteAlbum(Album $album) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($album);
-        $entityManager->flush();
+        $album = $this->getDoctrine()->getRepository(Album::class)->find($album->getId());
+        if (count($album->getPhotos())){
+            $this->get('session')->getFlashBag()->add('error','L\'album contient des photos et ne peut donc être supprimé');
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($album);
+            $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success','Album supprimé');
+        }
         return $this->redirectToRoute('gestion-site-albums');
     }
 
@@ -174,6 +182,7 @@ class GestionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($format);
         $entityManager->flush();
+        $this->get('session')->getFlashBag()->add('success','Tarification supprimée');
         return $this->redirectToRoute('gestion-site-prix');
     }
 
@@ -234,6 +243,7 @@ class GestionController extends Controller
             $photo->setWatermark($fileWatermarkName);
             $entityManager->persist($photo);
             $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success','Photo ajoutée');
             return new RedirectResponse($this->generateUrl('gererAlbum',array('albumId' => $albumId)));
         }
         return $this->render('gestion/photo.html.twig',array(
@@ -253,6 +263,7 @@ class GestionController extends Controller
         $filePathWatermark = $this->getParameter("watermarked_photos_directory") . DIRECTORY_SEPARATOR . $photo->getWatermark();
         if(file_exists($filePath)) {
             unlink($filePath);
+            $this->get('session')->getFlashBag()->add('success','Photo supprimée');
         }
         if (file_exists($filePathWatermark)) {
             unlink($filePathWatermark);

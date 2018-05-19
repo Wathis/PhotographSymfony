@@ -3,11 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            {#<link rel="stylesheet" href="{{ asset('css/jssocials.css') }}">#}
+            {#<link rel="stylesheet" href="{{ asset('css/jssocials-theme-flat.css') }}">#}
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% endblock %}
     </head>
     <body>
     <div class="{{ app.request.get('_route') == 'accueil' ? 'bg'}}">
@@ -104,5 +107,15 @@
         <script src="{{ asset('js/materialize.js') }}"></script>
         <script src="{{ asset('js/menu.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
+
+        {#<script src="{{ asset('js/jssocials.min.js') }}"></script>#}
+        {#<script>#}
+            {#$("#share").jsSocials({#}
+                {#showLabel: false,#}
+                {#showCount: false,#}
+                {#shareIn: "popup",#}
+                {#shares: ["twitter", "facebook"]#}
+            {#});#}
+        {#</script>#}
     {% endblock %}
 </html>
