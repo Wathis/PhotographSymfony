@@ -1,0 +1,29 @@
+{% extends 'gestion/nav.html.twig' %}
+
+{% block body %}
+
+    <div class="container content gestion">
+        <h3 style="text-align: center">Clients</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for client in clients %}
+                    <tr>
+                        <td>{{ client.id }}</td>
+                        <td>{{ client.email }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}

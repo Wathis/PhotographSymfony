@@ -2,9 +2,11 @@
 
 namespace App\Controller\Payment;
 
+use App\Entity\Achat;
 use App\Entity\Client;
 use App\Entity\Format;
 use App\Entity\Photo;
+use DateTime;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
@@ -94,10 +96,19 @@ class PaymentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
-            $this->get('session')->set("email",($client->getEmail()));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($client);
-            $entityManager->flush();
+            $clientSearched = $this->getDoctrine()->getRepository(Client::class)->findBy(array(
+                'email' => $client->getEmail()
+            ));
+            if (count($clientSearched)  == 0) {
+                var_dump("NO CLIENT");
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($client);
+                $entityManager->flush();
+            } else {
+                $client = $clientSearched[0];
+            }
+            $this->get('session')->set("clientId",$client->getId());
+
             return $this->redirectToRoute('acheter');
         }
 
@@ -152,10 +163,11 @@ class PaymentController extends Controller
                     }
                     $links[] = $fileName;
                 }
-                $email = $this->get('session')->get("email");
+                $clientId = $this->get('session')->get("clientId");
+                $client = $this->getDoctrine()->getRepository(Client::class)->find($clientId);
                 $message = (new \Swift_Message('Achat de photos'))
                     ->setFrom('photosportnormandy@gmail.com')
-                    ->setTo($email)
+                    ->setTo($client->getEmail())
                     ->setBody(
                         $this->renderView(
                             'emails/payment_done.html.twig',
@@ -165,8 +177,15 @@ class PaymentController extends Controller
                     )
                 ;
                 $mailer->send($message);
+                $achat = new Achat();
+                $achat->setClient($client);
+                $achat->setDate(new DateTime());
+                $achat->setPrix($this->get('session')->get('prix'));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($achat);
+                $entityManager->flush();
                 $this->viderPanier();
-                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès, photos envoyées à l\'addresse ' . $email);
+                $this->get('session')->getFlashBag()->add('success','Paiement effectué avec succès, photos envoyées à l\'addresse ' . $client->getEmail());
             } else {
                 $this->get('session')->getFlashBag()->add('error','Erreur lors du paiement, paiement non effectué');
             }
@@ -226,6 +245,7 @@ class PaymentController extends Controller
 
         $uniqueId = md5(uniqid());
         $this->get("session")->set("paymentUniqueId",$uniqueId);
+        $this->get("session")->set("prix",$prixTotal);
 
         $transaction = (new Transaction())
             ->setItemList($list)
@@ -243,7 +263,8 @@ class PaymentController extends Controller
             var_dump(json_decode($e->getData()));
         }
         return $this->render('payment/acheter.html.twig', [
-            'controller_name' => 'PaymentController'
+            'controller_name' => 'PaymentController',
+            'isPaymentValidated' => false
         ]);
     }
 

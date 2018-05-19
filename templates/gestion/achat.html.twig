@@ -1,0 +1,33 @@
+{% extends 'gestion/nav.html.twig' %}
+
+{% block body %}
+
+    <div class="container content gestion">
+        <h3 style="text-align: center">Achats</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Identifiant</th>
+                    <th>Date</th>
+                    <th>Email client</th>
+                    <th>Prix</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for achat in achats %}
+                    <tr>
+                        <td>{{ achat.id }}</td>
+                        <td>{{ achat.date | date('d/m/Y')}}</td>
+                        <td>{{ achat.client.email }}</td>
+                        <td>{{ achat.prix }} €</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}

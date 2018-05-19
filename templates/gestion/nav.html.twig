@@ -7,7 +7,8 @@
                 {% set url_page = app.request.uri %}
                 <li class="tab lienGerer"><a class="{{ 'album' in url_page ? 'activeTab' : '' }}" href="{{ path('gestion-site-albums') }}">MES ALBUMS</a></li>
                 <li class="tab lienGerer"><a class="{{ 'prix' in url_page ? 'activeTab' : '' }}" href="{{ path('gestion-site-prix') }}">PRIX</a></li>
-                {#<li class="tab lienGerer"><a class="{{ 'autres' in url_page ? 'activeTab' : '' }}" href="">AUTRES</a></li>#}
+                <li class="tab lienGerer"><a class="{{ 'clients' in url_page ? 'activeTab' : '' }}" href="{{ path('gestion-site-clients') }}">CLIENTS</a></li>
+                <li class="tab lienGerer"><a class="{{ 'achats' in url_page ? 'activeTab' : '' }}" href="{{ path('gestion-site-achats') }}">ACHATS</a></li>
             </ul>
         </div>
     </nav>

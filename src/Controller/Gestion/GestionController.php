@@ -3,7 +3,9 @@
 namespace App\Controller\Gestion;
 
 
+use App\Entity\Achat;
 use App\Entity\Album;
+use App\Entity\Client;
 use App\Entity\Format;
 use App\Entity\Photo;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -53,7 +55,7 @@ class GestionController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($album);
             $entityManager->flush();
-            return $this->redirectToRoute('gestion-site');
+            return $this->redirectToRoute('gestion-site-albums');
         }
 
         return $this->render('gestion/album.html.twig',array(
@@ -138,7 +140,31 @@ class GestionController extends Controller
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($album);
         $entityManager->flush();
-        return $this->redirectToRoute('gestion-site');
+        return $this->redirectToRoute('gestion-site-albums');
+    }
+
+    /**
+     * @Route("/gestion-site/achats", name="gestion-site-achats")
+     */
+    public function achats() {
+        $achats = $this->getDoctrine()
+            ->getRepository(Achat::class)
+            ->findAll();
+        return $this->render('gestion/achat.html.twig',array(
+            'achats' => $achats
+        ));
+    }
+
+    /**
+     * @Route("/gestion-site/clients", name="gestion-site-clients")
+     */
+    public function clients() {
+        $clients = $this->getDoctrine()
+            ->getRepository(Client::class)
+            ->findAll();
+        return $this->render('gestion/clients.html.twig',array(
+            'clients' => $clients
+        ));
     }
 
     /**

@@ -21,6 +21,10 @@
                         <ul><a href="{{  url }}" download>{{ url }}</a></ul>
                     {% endfor %}
                 </ul>
+            {% else %}
+                <div>
+                    Paiement non validé
+                </div>
             {% endif %}
             <div style="text-align: center;margin-top: 5vh">
                 <a class="button buttonGreen center-align" href="{{ path('accueil') }}">Retour accueil</a>

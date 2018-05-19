@@ -17,9 +17,14 @@ class Client
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=150, unique=true)
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Achat", mappedBy="client")
+     */
+    private $achats;
 
     public function getId()
     {
@@ -36,5 +41,23 @@ class Client
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getAchats()
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(?Achat $achat): void
+    {
+        $achat->setPost($this);
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+        }
+    }
+    public function removeAchat(Achat $achat): void
+    {
+        $achat->setPost(null);
+        $this->achats->removeElement($achat);
     }
 }
