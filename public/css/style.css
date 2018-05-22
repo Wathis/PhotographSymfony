@@ -48,7 +48,12 @@ div {
 
  */
 
-
+.searchInput {
+    border: 0px;
+    height: 35px;
+    border-radius: 20px;
+    margin-top: 4vh;
+}
 
 .bg {
     height: 100%;
@@ -110,14 +115,14 @@ nav {
 }
 .buttonWhite {
     color: gray;
-    background-color: white;
-    border-bottom: 3px solid #929292;
+    background-color: white !important;
+    border-bottom: 3px solid #929292 !important;
     display: block;
-    height: 40px;
-    width: 100px;
-    margin: auto;
-    margin-top: 8vh;
-    padding-top: 8px;
+    height: 40px !important;
+    width: 100px !important;
+    margin: auto !important;
+    margin-top: 6vh !important;
+    padding-top: 3px !important;
     border-top-left-radius: 1%;
     border-top-right-radius: 1%;
 }
@@ -167,7 +172,7 @@ nav {
 }
 
 .services {
-    height: 100%;
+    min-height: 60%;
     display: block;
 }
 

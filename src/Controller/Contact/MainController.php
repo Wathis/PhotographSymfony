@@ -27,8 +27,7 @@ class MainController extends Controller {
      */
     public function contact(Request $request, \Swift_Mailer $mailer){
 
-        $defaultData = array('message' => 'Type your message here');
-        $form = $this->createFormBuilder($defaultData)
+        $form = $this->createFormBuilder()
             ->add('nom', TextType::class,array(
                 'label' => false,
                 'attr' => array(

@@ -6,8 +6,8 @@ parameters:
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
     img_directory: '%kernel.project_dir%/public/img'
     watermarked_photos_directory: '%kernel.project_dir%/public/uploads/watermarked'
-    paypal_secret: EOXK4Qh_7ybFNvzuhEezA66lndhVsZvJ10ZX5gGsW2ZJRheEn83O_Dh85vX1EewM9gz8g0uarxrgz_Qa
-    paypal_api_key: AaQMppoLgWn8VxUw0owT8b63X-qNlM3mp_IWXnJ3ZHauhj31XMP_0EfCaw2ZlQLZwFueMp7VIA7HVLow
+    paypal_secret: EEmg7V5iblt3e-40JFUCjrlqNLp9Sf-zX8QhYFGR5zzrvMkH5ezGy9cA5ZN9r4OimTwU8U3qkwQfYfrJ
+    paypal_api_key: AWmo9bzl9_7YFjbCQjxw_OBYPj1f5IOWlpTrvoegTyovMzYWkoG-TprGbI5m7PZEQfQSArtcwsyS7AY4
 services:
     # default configuration for services in *this* file
     _defaults:

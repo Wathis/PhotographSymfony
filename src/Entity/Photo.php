@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,6 +49,16 @@ class Photo
      * @ORM\JoinColumn(nullable=false)
      */
     private $photo_album;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Personne", mappedBy="photo", orphanRemoval=true)
+     */
+    private $personnes;
+
+    public function __construct()
+    {
+        $this->personnes = new ArrayCollection();
+    }
 
     public function getAlbum(): ?Album
     {
@@ -108,6 +120,37 @@ class Photo
     public function setPhotoDate(\DateTimeInterface $photo_date): self
     {
         $this->photo_date = $photo_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Personne[]
+     */
+    public function getPersonnes(): Collection
+    {
+        return $this->personnes;
+    }
+
+    public function addPersonne(Personne $personne): self
+    {
+        if (!$this->personnes->contains($personne)) {
+            $this->personnes[] = $personne;
+            $personne->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removePersonne(Personne $personne): self
+    {
+        if ($this->personnes->contains($personne)) {
+            $this->personnes->removeElement($personne);
+            // set the owning side to null (unless already changed)
+            if ($personne->getPhoto() === $this) {
+                $personne->setPhoto(null);
+            }
+        }
 
         return $this;
     }

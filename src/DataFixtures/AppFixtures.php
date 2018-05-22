@@ -58,8 +58,10 @@ class AppFixtures extends Fixture
     {
         return [
             // $userData = [$fullname, $username, $password, $email, $roles];
-            ['Nicolas NOEL', 'nicolas_admin', 'password', 'noelnicola@gmail.com', 'ROLE_ADMIN'],
-            ['Mathis DELAUNAY', 'mathis_admin', 'password', 'delaunaymathis@yahoo.fr', 'ROLE_ADMIN'],
+//            ['Nicolas NOEL', 'nicolas_admin', '@J!zZ6+7dY;v8Fe', 'noelnicola@gmail.com', 'ROLE_ADMIN'],
+//            ['Mathis DELAUNAY', 'mathis_admin', '@J!zZ6+7dY;v8Fe', 'delaunaymathis@yahoo.fr', 'ROLE_ADMIN'],
+            ['Nicolas NOEL', 'nicolas_admin', 'nicolas_admin', 'noelnicola@gmail.com', 'ROLE_ADMIN'],
+            ['Mathis DELAUNAY', 'mathis_admin', 'mathis_admin', 'delaunaymathis@yahoo.fr', 'ROLE_ADMIN'],
         ];
     }
 

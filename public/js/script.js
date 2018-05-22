@@ -16,9 +16,19 @@ function clickShare() {
     t=TheImg.getAttribute('alt');
     window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');return false;
 }
-
 function selectFormat(prix) {
     document.getElementById('prixPhoto').innerHTML = "Prix de la photo :" +  prix  + "€"
+}
+
+function getFileName()  {
+    var x = document.getElementById('form_photos')
+    x.style.visibility = 'collapse'
+    var fichiers = x.files
+    if (fichiers.length == 1) {
+        document.getElementById('fileNamePhoto').innerHTML = fichiers[0].name
+    } else {
+        document.getElementById('fileNamePhoto').innerHTML = fichiers.length + " photos sélectionnées"
+    }
 }
 
 function changeCategory(category) {

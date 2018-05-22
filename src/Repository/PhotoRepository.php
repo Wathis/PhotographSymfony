@@ -42,6 +42,15 @@ class PhotoRepository extends ServiceEntityRepository
         return $result["id"] == null ? 0 : $result["id"];
     }
 
+    public function findWhereInfo($info) {
+        return $this->createQueryBuilder('p')
+            ->join('p.personnes','c')
+            ->andWhere(":info like concat('%',c.nom,'%') or :info like concat('%',c.prenom,'%') or p.photo_name like concat('%',:info,'%')")
+            ->setParameter('info', $info)
+            ->getQuery()
+            ->execute();
+    }
+
     public function findByAlbumId($albumId)
     {
         return $this->createQueryBuilder('p')

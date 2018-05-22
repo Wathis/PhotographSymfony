@@ -48,10 +48,23 @@ class GalleryController extends Controller
             'controller_name' => 'GalleryController',
             'albumName' => 'CAEN HB BESANSON',
             'category' => $category,
-            'album' => $album
+            'album' => $album,
         ]);
     }
-
+    /**
+     * @Route("/galerie/particulier/rechercher/{info}", name="rechercher")
+     */
+    public function rechercher($info)
+    {
+        $photos = $this->getDoctrine()
+            ->getRepository(Photo::class)
+            ->findWhereInfo($info);
+        return $this->render('gallery/rechercher.html.twig', [
+            'info' => $info,
+            'photos' => $photos,
+            'category' => 'professionnel'
+        ]);
+    }
     /**
      * @Route("/galerie/{category}/album/{albumId}/photo/{photoId}", name="viewer")
      */

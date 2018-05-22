@@ -7,6 +7,7 @@ use App\Entity\Achat;
 use App\Entity\Album;
 use App\Entity\Client;
 use App\Entity\Format;
+use App\Entity\Personne;
 use App\Entity\Photo;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -136,6 +137,69 @@ class GestionController extends Controller
     }
 
     /**
+     * @Route("/gestion-site/albums/{id}/ajouter-personne", name="ajouterPersonne")
+     */
+    public function ajouterPersonne(Photo $photo, Request $request) {
+
+        $personnes = $this->getDoctrine()
+            ->getRepository(Personne::class)
+            ->findBy(array(
+                'photo' => $photo
+            ));
+
+        $personne = new Personne();
+        $personne->setPhoto($photo);
+
+        $form = $this->createFormBuilder($personne)
+            ->add('nom', TextType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Nom',
+                        'class' => 'col l3 m3 s12 contactInput browser-default'
+                    )
+                ))
+            ->add('prenom', TextType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Prenom',
+                        'class' => 'col l3 m3 offset-l1 offset-m1 s12 contactInput browser-default'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter personne','attr' => array('class' => 'col l4 m4 offset-l1 offset-m1 s12 buttonGerer noInputStyle button buttonGreen')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $personne = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($personne);
+            $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success',$personne->getNom()." ". $personne->getPrenom() . " ajoutée");
+            return $this->redirectToRoute('ajouterPersonne',array('id'=>$photo->getId()));
+        }
+
+        return $this->render('gestion/personnes.html.twig',array(
+            'form' => $form->createView(),
+            'personnes' => $personnes,
+            'photo' => $photo
+        ));
+    }
+
+    /**
+     * @Route("/gestion-site/albums/{idPhoto}/delete-personne/{id}", name="deletePersonne")
+     */
+    public function deletePersonne($idPhoto,Personne $personne) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($personne);
+        $entityManager->flush();
+        $this->get('session')->getFlashBag()->add('success',$personne->getNom() . ' ' . $personne->getPrenom() . ' enlevée');
+        return $this->redirectToRoute('ajouterPersonne',array('id' => $idPhoto ));
+    }
+
+    /**
      * @Route("/gestion-site/delete-album/{id}", name="deleteAlbum")
      */
     public function deleteAlbum(Album $album) {
@@ -157,7 +221,7 @@ class GestionController extends Controller
     public function achats() {
         $achats = $this->getDoctrine()
             ->getRepository(Achat::class)
-            ->findAll();
+            ->findBy(array(), array('date' => 'DESC'));
         return $this->render('gestion/achat.html.twig',array(
             'achats' => $achats
         ));
@@ -191,60 +255,64 @@ class GestionController extends Controller
      */
     public function gererAlbum(Request $request,$albumId) {
         $album = $this->getDoctrine()->getManager()->getRepository(Album::class)->find($albumId);
-        $photo = new Photo();
-        $photo->setPhotoDate(new \DateTime());
-        $photo->setAlbum($album);
-        $form = $this->createFormBuilder($photo)
-            ->add('photoName', TextType::class,
+        $dateTime = new \DateTime();
+        $form = $this->createFormBuilder()
+            ->add('photos', FileType::class,
                 array(
                     'label' => false,
+                    'multiple' => true,
                     'attr' => array(
-                        'placeholder' => 'Nom de la photo',
-                        'class' => 'col l4 m4 s12 contactInput browser-default'
-                    )
-                ))
-            ->add('photo', FileType::class,
-                array(
-                    'label' => false,
-                    'attr' => array(
-                        'class' => 'choisirPhoto'
+                        'class' => 'choisirPhoto',
+                        'id' => 'uploadPhotoId',
+                        'onchange'=> 'getFileName()',
+                        'accept' => '.jpg, .jpeg',
+                        'multiple' => 'ltiple'
                     )
                 ))
             ->add('add', SubmitType::class, array('label' => 'Ajouter la photo','attr' => array('class' => 'col l3 m3 s12 offset-l1 offset-m1 noInputStyle button buttonGreen')))
             ->getForm();
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $photo = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $photo->getPhoto();
-            $extension = $file->guessExtension();
-            $fileName = md5(uniqid()).'.'. $extension;
-            $file->move(
-                $this->getParameter('photos_directory'),
-                $fileName
-            );
-
-            //Creation du watermark
-            $filePathWatermark = $this->getParameter('img_directory') . DIRECTORY_SEPARATOR . 'watermark.png';
-            $watermark = imagecreatefrompng($filePathWatermark);
-            //Changement de l'opacité
-            $opacity = 0.6;
-            imagealphablending($watermark, false);
-            imagesavealpha($watermark, true);
-            imagefilter($watermark, IMG_FILTER_COLORIZE, 0,0,0,127*$opacity);
-            //Collage du watermark
-            $im = imagecreatefromjpeg($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $fileName);
-            imagecopy($im, $watermark, imagesx($im) - imagesx($watermark) - 10, imagesy($im) - imagesy($watermark) - 10, 0, 0, imagesx($watermark), imagesy($watermark));
-            $fileWatermarkName = md5(uniqid()).'.'. $extension;
-            imagejpeg($im,$this->getParameter('watermarked_photos_directory') . DIRECTORY_SEPARATOR . $fileWatermarkName);
-            $photo->setPhoto($fileName);
-            $photo->setWatermark($fileWatermarkName);
-            $entityManager->persist($photo);
-            $entityManager->flush();
-            $this->get('session')->getFlashBag()->add('success','Photo ajoutée');
-            return new RedirectResponse($this->generateUrl('gererAlbum',array('albumId' => $albumId)));
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $data = $form->getData();
+                foreach ($data["photos"] as $photoForm) {
+                    $photo = new Photo();
+                    $photo->setPhotoDate($dateTime);
+                    $photo->setAlbum($album);
+                    $entityManager = $this->getDoctrine()->getManager();
+                    /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                    $file = $photoForm;
+                    $extension = $file->guessExtension();
+                    $fileName = md5(uniqid()) . '.' . $extension;
+                    $clientFileName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getClientOriginalName());
+                    $photo->setPhotoName($clientFileName);
+                    $file->move(
+                        $this->getParameter('photos_directory'),
+                        $fileName
+                    );
+                    //Creation du watermark
+                    $filePathWatermark = $this->getParameter('img_directory') . DIRECTORY_SEPARATOR . 'watermark.png';
+                    $watermark = imagecreatefrompng($filePathWatermark);
+                    //Changement de l'opacité
+                    $opacity = 0.6;
+                    imagealphablending($watermark, false);
+                    imagesavealpha($watermark, true);
+                    imagefilter($watermark, IMG_FILTER_COLORIZE, 0, 0, 0, 127 * $opacity);
+                    //Collage du watermark
+                    $im = imagecreatefromjpeg($this->getParameter('photos_directory') . DIRECTORY_SEPARATOR . $fileName);
+                    imagecopy($im, $watermark, imagesx($im) - imagesx($watermark) - 10, imagesy($im) - imagesy($watermark) - 10, 0, 0, imagesx($watermark), imagesy($watermark));
+                    $fileWatermarkName = md5(uniqid()) . '.' . $extension;
+                    imagejpeg($im, $this->getParameter('watermarked_photos_directory') . DIRECTORY_SEPARATOR . $fileWatermarkName);
+                    $photo->setPhoto($fileName);
+                    $photo->setWatermark($fileWatermarkName);
+                    $entityManager->persist($photo);
+                    $entityManager->flush();
+                }
+                $message = count($data["photos"]) <= 1 ? 'Photo ajoutée' : 'Photos ajoutées';
+                $this->get('session')->getFlashBag()->add('success', $message);
+                return new RedirectResponse($this->generateUrl('gererAlbum', array('albumId' => $albumId)));
+            }
         }
         return $this->render('gestion/photo.html.twig',array(
             'form' => $form->createView(),

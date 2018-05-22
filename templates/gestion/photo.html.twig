@@ -10,17 +10,17 @@
     <div class="container content gestion">
         <h3 style="text-align: center">{{ album.albumName }}</h3>
 
+        {{ form_errors(form) }}
         {{ form_start(form) }}
         <div class="center-align" style="margin-bottom: 5vh;">
             <div class="row">
-                {{ form_widget(form.photoName) }}
-                {{ form_widget(form.photo) }}
-                <label style="margin-top: 30px" for="form_photo" class="col l3 m3 s12  offset-l1 offset-m1 button buttonBlue">Choisir photo</label>
+                {{ form_widget(form.photos) }}
+                <label style="margin-top: 30px" for="form_photos" class="col l2 m2 s12 button buttonBlue">Choisir photo</label>
+                <span id="fileNamePhoto" style="margin-top: 35px" class="col l6 m6 s12 valign-wrapper">Veuillez choisir une ou des photo(s)</span>
                 {{ form_widget(form.add) }}
             </div>
         </div>
         {{ form_end(form) }}
-
         <table>
             <thead>
                 <tr>
@@ -38,6 +38,7 @@
                         <td>{{ photo.photoName }}</td>
                         <td>{{ photo.photoDate | date("d/m/Y") }}</td>
                         <td>
+                            <a href="{{ path('ajouterPersonne',{'id' : photo.id}) }}" title="Ajouter personnes"><i class="small material-icons gray-text center-align" width="20px">add</i></a>
                             <a href="{{ path('deletePhoto',{'albumId' : album.id,'photoId' : photo.id}) }}" title="Supprimer la photo"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>
                         </td>
                     </tr>

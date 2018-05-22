@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galerie - {{ category }}{% endblock %}
+
+{% block body %}
+
+    <div class="gallery content">
+
+        <div class="header">
+            <h3 class="center-align">RECHERCHE</h3>
+
+            <div class="separatorLine"></div>
+
+            <h5 class="center-align">
+                {{ info | upper }}
+            </h5>
+        </div>
+
+        <div class="container">
+            <div class="album hide-on-small-and-down">
+                {% for photo in photos %}
+                    <a class="tile" href="{{ path('viewer',{'albumId' : photo.album.id,'category' : category,'photoId' : photo.id}) }}">
+                        <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="hide-on-med-and-up">
+                {% for photo in photos %}
+                    <div class="row" >
+                        <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : photo.album.id,'category' : category,'photoId' : photo.id}) }}">
+                            <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

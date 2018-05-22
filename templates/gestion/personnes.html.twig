@@ -1,0 +1,46 @@
+{% extends 'gestion/nav.html.twig' %}
+
+{% block body %}
+
+    <div class="retourGallerie">
+        <a href="{{ path('gererAlbum',{'albumId' : photo.album.id}) }}" class="nextPreviousA">&lt; Retour photos</a>
+    </div>
+
+    <div class="container content gestion">
+        <h3 style="text-align: center">Personnes sur la photo</h3>
+
+        {{ form_start(form) }}
+        <div class="center-align row" style="margin-bottom: 5vh;">
+            {{ form_widget(form.nom) }}
+            {{ form_widget(form.prenom) }}
+            {{ form_widget(form.add) }}
+        </div>
+        {{ form_end(form) }}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for personne in personnes %}
+                    <tr>
+                        <td>{{ personne.nom }}</td>
+                        <td>{{ personne.prenom }}</td>
+                        <td>
+                            <a href="{{ path('deletePersonne',{'id' : personne.id,'idPhoto' : photo.id}) }}" title="Supprimer la personne de la photo"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+{% endblock %}
