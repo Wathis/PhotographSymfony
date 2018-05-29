@@ -4,10 +4,24 @@
 
 
 {% block firstPage %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="slideshow-container">
+        <div class="carousel-background fade">
+            <img class="image-carousel" src="{{ asset('img/backgroundSnow.png') }}" style="width:100%">
+        </div>
+
+        <div class="carousel-background fade">
+            <img class="image-carousel" src="{{ asset('img/backgroundRoute.jpg') }}" style="width:100%">
+        </div>
+    </div>
     <div class="container">
         <div class="firstPage">
             <div class="row imageContainerAccueil">
-                <img src="{{ asset('img/logo.png') }}" class=" col l4 m4 s10 offset-s1 offset-m4 offset-l4 imageLogoAccueil" width="250" alt="">
+                <img src="{{ asset('img/logo.png') }}" class="col l4 m4 s8 offset-s2 offset-m4 offset-l4 imageLogoAccueil" alt="">
             </div>
             <p class="description">Vous avez été pris en photo ?<br />
                 Indiquez votre nom ci-dessous <br />
@@ -21,11 +35,11 @@
                 <div><a href="https://www.facebook.com/Photosportnormandy-2057705341112605/" class="col s4 offset-s2 l2 offset-l4 facebook"></a></div>
                 <div><a href="https://www.instagram.com/photosportnormandy/" class="col s4 l2 instagram"></a></div>
             </div>
+            <div class="container-arrow">
+                <a><i class="arrow-down material-icons medium" style="color: whitesmoke">arrow_drop_down</i></a>
+            </div>
         </div>
     </div>
-{% endblock %}
-
-{% block body %}
 
     <div class="services">
 
@@ -76,11 +90,11 @@
                 </p>
             </div>
             <div class="consult-right col l4 m12 s12">
-
                 <a class="buttonGray center-align" href="{{ path('gallerie',{'category' : 'professionnel'}) }}">PROFESSIONNEL</a><br />
                 <a class="buttonWhiteBorder center-align" href="{{ path('gallerie',{'category' : 'particulier'}) }}">PARTICULIER</a>
             </div>
         </div>
-
     </div>
+
+
 {% endblock %}

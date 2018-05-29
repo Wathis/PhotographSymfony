@@ -11,7 +11,7 @@
             <div class="retourGallerie">
                 <a href="{{ path('gallerie',{'category' : category}) }}" class="nextPreviousA">&lt; Retour album</a>
             </div>
-            <h3 class="center-align">CAEN HB BESANSON</h3>
+            <h3 class="center-align">{{ album.albumName }}</h3>
 
             <div class="separatorLine"></div>
 
@@ -23,8 +23,16 @@
         <div class="container">
             <div class="album hide-on-small-and-down">
                 {% for photo in album.photos %}
-                    <a class="tile" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
-                        <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
+                    {% if app.request.query.get('password') is not null %}
+                        <a class="tile" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id,'password' : app.request.query.get('password')}) }}">
+                    {% else %}
+                        <a class="tile" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
+                    {% endif %}
+                        {% if 'payant' in album.category %}
+                            <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                        {% endif %}
                     </a>
                 {% endfor %}
             </div>
@@ -32,8 +40,16 @@
             <div class="hide-on-med-and-up">
                 {% for photo in album.photos %}
                     <div class="row" >
-                        <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
+                        {% if app.request.query.get('password') is not null %}
+                            <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id,'password' : app.request.query.get('password')}) }}">
+                        {% else %}
+                            <a class="col s12 tileSmall" href="{{ path('viewer',{'albumId' : album.id,'category' : category,'photoId' : photo.id}) }}">
+                        {% endif %}
+                        {% if 'payant' in album.category %}
                             <img src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="">
+                        {% endif %}
                         </a>
                     </div>
                 {% endfor %}

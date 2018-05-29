@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Nicolas NOEL{% endblock %}</title>
+        <title>{% block title %}Photo Sport Normandy{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('css/materialize.css') }}">
@@ -13,7 +13,7 @@
         {% endblock %}
     </head>
     <body>
-    <div class="{{ app.request.get('_route') == 'accueil' ? 'bg'}}">
+    {#<div class="{{ app.request.get('_route') == 'accueil' ? 'bg'}}">#}
         <nav class="{{ app.request.get('_route') == 'accueil' ? 'navHome' : 'nav'}}">
             <div class="nav-wrapper col.s12">
                 {% set url_page = app.request.uri %}
@@ -25,10 +25,11 @@
                         <li><a href="{{ path('accueil') }}"><span class="{{ 'accueil' in url_page ? 'active' }}">ACCUEIL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}"><span class="{{ 'professionnel' in url_page ? 'active' }}">PROFESSIONNEL</span></a></li>
                         <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}"><span class="{{ 'particulier' in url_page ? 'active' }}">PARTICULIER</span></a></li>
+                        <li><a href="{{ path('presse') }}"><span class="{{ 'presse' in url_page ? 'active' }}">PRESSE</span></a></li>
                         <li><a href="{{ path('contact') }}"><span class="{{ 'contact' in url_page ? 'active' }}">CONTACT</span></a></li>
                         <li><a href="{{ path('panier') }}">
                                 {% if app.session.get('panier') == null %}
-                                    <img class="panier" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt="">
+                                    <img class="paniephpr" src="{{ asset('img/shopping-basket.svg') }}" width="30px" alt="">
                                 {% else %}
                                     <img class="panier" src="{{ asset('img/shopping-basket-alert.svg') }}" width="30px" alt="">
                                 {% endif %}
@@ -60,8 +61,8 @@
                 </a>
             </div>
         </nav>
-    {% block firstPage %}{% endblock %}
-    </div>
+        {#{% block firstPage %}{% endblock %}#}
+    {#</div>#}
 
     {% block navgerer %}{% endblock %}
     {% block body %}{% endblock %}
@@ -75,6 +76,7 @@
                     <li><a href="{{ path('accueil') }}" class="active">Accueil</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'professionnel'}) }}">Professionnel</a></li>
                     <li><a href="{{ path('gallerie',{'category' : 'particulier'}) }}">Particulier</a></li>
+                    <li><a href="{{ path('presse') }}">Presse</a></li>
                     <li><a href="{{ path('contact') }}">Contact</a></li>
                     <li><a href="{{ path('gestion-site-albums') }}">Gerer</a></li>
                     {% if app.user %}

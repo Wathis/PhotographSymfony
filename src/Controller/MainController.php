@@ -27,6 +27,7 @@ class MainController extends Controller
     {
         return $this->redirectToRoute('accueil');
     }
+
     /**
      * @Route("/accueil", name="accueil")
      */
@@ -47,7 +48,6 @@ class MainController extends Controller
             ))
             ->getForm();
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             return $this->redirectToRoute('rechercher',array(

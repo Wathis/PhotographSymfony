@@ -2,9 +2,12 @@
 
 namespace App\Controller\Gallery;
 
+use App\Entity\Album;
 use App\Entity\Format;
 use App\Entity\Photo;
-use Proxies\__CG__\App\Entity\Album;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -27,7 +30,11 @@ class GalleryController extends Controller
         }
         $miniatures = array();
         foreach ($albums as $album) {
-            $miniatures[$album->getId()] = count($album->getPhotos()) > 0 ? $album->getPhotos()[0]->getWatermark() : "pas-apercu.png";
+            if (strpos($album->getCategory(),'payant') !== false) {
+                $miniatures[$album->getId()] = count($album->getPhotos()) > 0 ? $album->getPhotos()[0]->getWatermark() : "pas-apercu.png";
+            } else {
+                $miniatures[$album->getId()] = count($album->getPhotos()) > 0 ? $album->getPhotos()[0]->getPhoto() : "pas-apercu.png";
+            }
         }
         return $this->render('gallery/gallery.html.twig', [
             'controller_name' => 'GalleryController',
@@ -36,14 +43,48 @@ class GalleryController extends Controller
             'miniatures' => $miniatures
         ]);
     }
+
+
     /**
-     * @Route("/galerie/{category}/album/{albumId}", name="album")
+     * @Route("/galerie/{category}/password/{id}", name="passwordAlbum")
      */
-    public function album($category,$albumId)
+    public function passwordAlbum(Request $request,$category,Album $album)
     {
-        $album = $this->getDoctrine()
-            ->getRepository(Album::class)
-            ->find($albumId);
+        $form = $this->createFormBuilder()
+            ->add('password', TextType::class, array("label" => false,'attr' => array('class' => 'emailInput browser-default','placeholder' => 'Mot de passe')))
+            ->add('save', SubmitType::class, array('label' => 'Valider','attr' => array('class' => 'noInputStyle button buttonGreen center-align')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $datas = $form->getData();
+            $password = $datas['password'];
+            return $this->redirectToRoute('album', array('id' => $album->getId(), 'category' => $category,'password' => $password));
+        }
+
+        return $this->render('gallery/password.html.twig', [
+            'form' => $form->createView(),
+            'album' =>$album,
+            'category' => $category
+        ]);
+    }
+
+    /**
+     * @Route("/galerie/{category}/album/{id}", name="album")
+     */
+    public function album($category,Album $album)
+    {
+        if (strpos($album->getCategory(),'protected') !== false) {
+            if (isset($_GET["password"]) && !empty($_GET["password"])){
+                if ($album->getPassword() !== $_GET["password"]) {
+                    $this->get('session')->getFlashBag()->add('error','Mauvais mot de passe');
+                    return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
+                }
+            } else {
+                return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
+            }
+        }
         return $this->render('gallery/album.html.twig', [
             'controller_name' => 'GalleryController',
             'albumName' => 'CAEN HB BESANSON',
@@ -73,6 +114,17 @@ class GalleryController extends Controller
         $album = $this->getDoctrine()
             ->getRepository(Album::class)
             ->find($albumId);
+
+        if (strpos($album->getCategory(),'protected') !== false) {
+            if (isset($_GET["password"]) && !empty($_GET["password"])){
+                if ($album->getPassword() !== $_GET["password"]) {
+                    $this->get('session')->getFlashBag()->add('error','Mauvais mot de passe');
+                    return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
+                }
+            } else {
+                return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
+            }
+        }
 
         $photo = $this->getDoctrine()
             ->getRepository(Photo::class)

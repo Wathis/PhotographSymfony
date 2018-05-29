@@ -7,6 +7,7 @@
         {{ form_start(form) }}
         <div class="center-align row" style="margin-bottom: 5vh;">
             {{ form_widget(form.albumName) }}
+            {{ form_widget(form.category) }}
             {{ form_widget(form.add) }}
         </div>
         {{ form_end(form) }}
@@ -16,6 +17,8 @@
                 <tr>
                     <th>Nom album</th>
                     <th>Date de création</th>
+                    <th>Categorie</th>
+                    <th>Mot de passe</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -25,6 +28,18 @@
                     <tr>
                         <td>{{ album.albumName }}</td>
                         <td>{{ album.albumDate | date("d/m/Y") }}</td>
+                        <td>
+                            {% if album.category == 'free' %}
+                                Gratuit
+                            {% elseif album.category == 'payant' %}
+                                Payant
+                            {% elseif album.category == 'payant_protected' %}
+                                Payant protégé
+                            {% else %}
+                                Gratuit protégé
+                            {% endif %}
+                        </td>
+                        <td>{{ album.password is null ? 'Aucun mot de passe' : album.password }}</td>
                         <td>
                             <a href="{{ path('gererAlbum',{'albumId' : album.id}) }}" title="Gerer photos"><i class="small material-icons gray-text center-align" width="20px">build</i></a>
                             <a href="{{ path('deleteAlbum',{'id' : album.id}) }}" title="Supprimer l'album"><i class="small material-icons red-text center-align" width="20px">cancel</i></a>

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="gallery content">
+
+        <div class="header">
+            <h3 class="center-align">PARUTIONS PRESSE</h3>
+        </div>
+
+        <div class="container">
+            {% if presses | length > 0 %}
+                <div class="album hide-on-small-and-down">
+                    {% for presse in presses %}
+                        <div class="tile">
+                            <img src="{{ asset('uploads/presse/' ~ presse.photo) }}" alt="">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="hide-on-med-and-up">
+                    {% for presse in presses %}
+                        <div class="row" >
+                            <div class="col s12 tileSmall">
+                                <img src="{{ asset('uploads/presse/' ~ presse.photo) }}" alt="">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h5 class="center-align" style="margin-top: 20vh">Aucune parution dans la presse pour le moment</h5>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -9,6 +9,8 @@ use App\Entity\Client;
 use App\Entity\Format;
 use App\Entity\Personne;
 use App\Entity\Photo;
+use App\Entity\Presse;
+use Sonata\CoreBundle\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -43,16 +45,33 @@ class GestionController extends Controller
                     'label' => false,
                     'attr' => array(
                         'placeholder' => 'Nom de l\'album',
-                        'class' => 'col l5 m5 s12 contactInput browser-default'
+                        'class' => 'col l4 m4 s12 contactInput browser-default'
                     )
                 ))
-            ->add('add', SubmitType::class, array('label' => 'Ajouter l\'album','attr' => array('class' => 'col l5 m5 offset-l2 offset-m2 s12 buttonGerer noInputStyle button buttonGreen')))
+            ->add('category', ChoiceType::class,
+                array(
+                    'choices' => array(
+                        'Album payant' => 'payant',
+                        'Album gratuit' => 'free',
+                        'Album payant protégé' => 'payant_protected',
+                        'Album gratuit protégé' => 'free_protected',
+                    ),
+                    'label' => false,
+                    'attr' => array(
+                        'placeholder' => 'Nom de l\'album',
+                        'class' => 'col l3 m3 offset-l1 offset-m1 s12 contactInput'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter l\'album','attr' => array('class' => 'col l3 m3 offset-l1 offset-m1 s12 buttonGerer noInputStyle button buttonGreen')))
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $album = $form->getData();
+            if (strpos($album->getCategory(),'protected') !== false) {
+                $album->setPassword(md5(uniqid()));
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($album);
             $entityManager->flush();
@@ -264,7 +283,7 @@ class GestionController extends Controller
                     'attr' => array(
                         'class' => 'choisirPhoto',
                         'id' => 'uploadPhotoId',
-                        'onchange'=> 'getFileName()',
+                        'onchange'=> 'getFileName("form_photos")',
                         'accept' => '.jpg, .jpeg',
                         'multiple' => 'ltiple'
                     )
@@ -308,6 +327,8 @@ class GestionController extends Controller
                     $photo->setWatermark($fileWatermarkName);
                     $entityManager->persist($photo);
                     $entityManager->flush();
+                    imagedestroy($im);
+                    imagedestroy($watermark);
                 }
                 $message = count($data["photos"]) <= 1 ? 'Photo ajoutée' : 'Photos ajoutées';
                 $this->get('session')->getFlashBag()->add('success', $message);
@@ -339,4 +360,75 @@ class GestionController extends Controller
         $entityManager->flush();
         return new RedirectResponse($this->generateUrl('gererAlbum',array('albumId' => $albumId)));
     }
+
+    /**
+     * @Route("/gestion-site/presse/delete/{id}", name="deletePresse")
+     */
+    public function deletePresse(Presse $presse) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($presse);
+        $filePath = $this->getParameter("presse_directory") . DIRECTORY_SEPARATOR . $presse->getPhoto();
+        if(file_exists($filePath)) {
+            unlink($filePath);
+            $this->get('session')->getFlashBag()->add('success','Photo supprimée');
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('gestion-site-presse');
+    }
+
+    /**
+     * @Route("/gestion-site/presse", name="gestion-site-presse")
+     */
+    public function presse(Request $request) {
+
+        $presses = $this->getDoctrine()
+            ->getRepository(Presse::class)
+            ->findAll();
+
+        $presse = new Presse();
+
+        $form = $this->createFormBuilder($presse)
+            ->add('title',TextType::class,array(
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Source',
+                    'class' => 'col l3 m3 s12 contactInput browser-default'
+                )
+            ))
+            ->add('photo', FileType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'class' => 'choisirPhoto',
+                        'id' => 'uploadPhotoId',
+                        'onchange'=> 'getFileName("form_photo")'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter','attr' => array('class' => 'col l2 m2 offset-l1 offset-m1 s12 buttonGerer noInputStyle button buttonGreen')))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $presse = $form->getData();
+            $file = $presse->getPhoto();
+            var_dump($presse->getPhoto());
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $presse->setPhoto($fileName);
+            $file->move(
+                $this->getParameter('presse_directory'),
+                $fileName
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($presse);
+            $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success',"Parution presse ajoutée");
+            return $this->redirectToRoute('gestion-site-presse');
+        }
+
+        return $this->render('gestion/presse.html.twig',array(
+            'form' => $form->createView(),
+            'presses' => $presses
+        ));
+    }
+
 }

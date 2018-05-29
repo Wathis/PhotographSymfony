@@ -8,7 +8,7 @@
         <div class="header">
 
             <div class="retourGallerie">
-                <a href="{{ path('album',{'category' : category,'albumId' : album.id }) }}" class="nextPreviousA">&lt; Retour album</a>
+                <a href="{{ path('album',{'category' : category,'id' : album.id }) }}" class="nextPreviousA">&lt; Retour album</a>
             </div>
             <h3 class="center-align" style="margin-top: 0;">{{ album.albumName }}</h3>
 
@@ -56,8 +56,11 @@
                     </div>
                 </div>
                 <div class="col l6 m6 image">
-
-                    <img  id="imageToShare" class="responsive-img" src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="Photo" width="500">
+                    {% if 'payant' in album.category %}
+                        <img  id="imageToShare" class="responsive-img" src="{{ asset('uploads/watermarked/' ~ photo.watermark) }}" alt="Photo" width="500">
+                    {% else %}
+                        <img  id="imageToShare" class="responsive-img" src="{{ asset('uploads/photos/' ~ photo.photo) }}" alt="Photo" width="500">
+                    {% endif %}
                 </div>
                 <div class="col l3 m3 hide-on-small-and-down">
                     <div class="nextPrevious">
@@ -70,10 +73,13 @@
             </div>
 
             <div class="containerButtons">
-                <a class="button buttonBlue center-align" href="{{ asset('uploads/watermarked/' ~ photo.watermark) }}">Agrandir la photo</a>
+                <a class="button buttonBlue center-align" target="_blank" href="{{ asset('uploads/watermarked/' ~ photo.watermark) }}">Agrandir la photo</a>
                 <a onclick="clickShare()" class="button buttonYellow center-align" >Partager la photo</a>
             </div>
+
             <form id="formBuyPhoto" method="post" action="{{ path('ajouterPanier') }}">
+
+                {% if 'payant' in album.category  %}
                     <div class="textInput">
                         <div class="messageSelect" style="display: inline-block">Utilisation :</div>
                         <select onchange="changeCategory(value)" style="display: inline-block;" class="browser-default inputSelect" name="utilisation" id="">
@@ -82,35 +88,40 @@
                         </select>
                     </div>
 
-                <input type="text" name="photoId" value="{{ photo.id }}" hidden>
+                    <input type="text" name="photoId" value="{{ photo.id }}" hidden>
 
-                <div class="textInput" style="margin-bottom: 2vh;">
-                    <div id="formatProfessionnel" {{ category == 'professionnel' ? '' : 'hidden' }}>
-                        <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
-                        <select style="display: inline-block;" class="browser-default inputSelect"  name="{{category == 'particulier' ? '' : 'format' }}"  id="selectProfessionnel">
-                            {% for format in formats %}
-                                {% if format.categorie == 'professionnel' %}
-                                    <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                    <div class="textInput" style="margin-bottom: 2vh;">
+                        <div id="formatProfessionnel" {{ category == 'professionnel' ? '' : 'hidden' }}>
+                            <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
+                            <select style="display: inline-block;" class="browser-default inputSelect"  name="{{category == 'particulier' ? '' : 'format' }}"  id="selectProfessionnel">
+                                {% for format in formats %}
+                                    {% if format.categorie == 'professionnel' %}
+                                        <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div id="formatParticulier" {{ category == 'particulier' ? '' : 'hidden' }}>
+                            <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
+                            <select style="display: inline-block;" class="browser-default inputSelect" name="{{category == 'particulier' ? 'format' : '' }}" id="selectParticulier">
+                                {% for format in formats %}
+                                    {% if format.categorie == 'particulier' %}
+                                        <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                    <div id="formatParticulier" {{ category == 'particulier' ? '' : 'hidden' }}>
-                        <div class="messageSelect" style="display: inline-block">Format de la photo :</div>
-                        <select style="display: inline-block;" class="browser-default inputSelect" name="{{category == 'particulier' ? 'format' : '' }}" id="selectParticulier">
-                            {% for format in formats %}
-                                {% if format.categorie == 'particulier' %}
-                                    <option value="{{ format.id }}">{{ (format.ratioTaille * photoWidth) | number_format |replace({"," : " "}) }} x {{ (format.ratioTaille * photoHeight) |number_format |replace({"," : " "})}} - {{ format.prix }}€</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
+                {% endif %}
 
                 <input id="acheter" name="acheter" class="browser-default" type="text" hidden value="false">
                 <div class="containerButtons">
-                    <a class="button buttonGreen agrandirButton  center-align" onclick="submitPhoto()">Ajouter au panier</a>
-                    <a class="button buttonGray center-align" onclick="clickAcheter()">Acheter</a>
+                    {% if 'payant' in album.category  %}
+                        <a class="button buttonGreen agrandirButton  center-align" onclick="submitPhoto()">Ajouter au panier</a>
+                        <a class="button buttonGray center-align" onclick="clickAcheter()">Acheter</a>
+                    {% else %}
+                        <a class="button buttonGreen center-align" href="{{ asset('uploads/photos/' ~ photo.photo) }}" download>Télécharger</a>
+                    {% endif %}
                 </div>
             </form>
 

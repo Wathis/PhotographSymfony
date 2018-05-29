@@ -44,8 +44,8 @@ class PhotoRepository extends ServiceEntityRepository
 
     public function findWhereInfo($info) {
         return $this->createQueryBuilder('p')
-            ->join('p.personnes','c')
-            ->andWhere(":info like concat('%',c.nom,'%') or :info like concat('%',c.prenom,'%') or p.photo_name like concat('%',:info,'%')")
+            ->leftJoin('p.personnes','c')
+            ->andWhere("c.nom like concat('%',:info,'%') or c.prenom like concat('%',:info,'%') or p.photo_name like concat('%',:info,'%')")
             ->setParameter('info', $info)
             ->getQuery()
             ->execute();

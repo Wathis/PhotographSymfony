@@ -4,6 +4,7 @@ parameters:
     locale: 'en'
     photos_watermarked_directory: '%kernel.project_dir%/public/upload/watermarked'
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
+    presse_directory: '%kernel.project_dir%/public/uploads/presse'
     img_directory: '%kernel.project_dir%/public/img'
     watermarked_photos_directory: '%kernel.project_dir%/public/uploads/watermarked'
     paypal_secret: EEmg7V5iblt3e-40JFUCjrlqNLp9Sf-zX8QhYFGR5zzrvMkH5ezGy9cA5ZN9r4OimTwU8U3qkwQfYfrJ

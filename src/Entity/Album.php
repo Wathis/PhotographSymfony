@@ -32,10 +32,55 @@ class Album
      */
     private $album_photos;
 
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->album_photos = new ArrayCollection();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+
+
 
     public function getPhotos()
     {
