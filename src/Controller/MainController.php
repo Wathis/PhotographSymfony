@@ -29,6 +29,16 @@ class MainController extends Controller
     }
 
     /**
+     * @Route("/cgv", name="cgv")
+     */
+    public function cgv()
+    {
+        return $this->render('cgv.html.twig', [
+            'controller_name' => 'MainController'
+        ]);
+    }
+
+    /**
      * @Route("/accueil", name="accueil")
      */
     public function accueil(Request $request)

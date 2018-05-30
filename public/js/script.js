@@ -32,6 +32,37 @@ function getFileName(fileId)  {
     }
 }
 
+function clic(e)
+{
+    var message = "Clic droit désactivé";
+
+    if(!document.rightClickDisabled) // initialize
+    {
+        if(document.layers)
+        {
+            document.captureEvents(Event.MOUSEDOWN);
+            document.onmousedown = clic;
+        }
+        else document.oncontextmenu = clic;
+        return document.rightClickDisabled = true;
+    }
+    if(document.layers || (document.getElementById && !document.all))
+    {
+        if (e.which==2||e.which==3)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+function changeRatio(e) {
+    document.getElementById("infoRatio").innerHTML = e.value
+}
+
 var slideIndex = 0;
 showSlides();
 

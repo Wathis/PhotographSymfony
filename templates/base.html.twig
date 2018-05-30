@@ -12,7 +12,7 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         {% endblock %}
     </head>
-    <body>
+    <body  onLoad="clic()">
     {#<div class="{{ app.request.get('_route') == 'accueil' ? 'bg'}}">#}
         <nav class="{{ app.request.get('_route') == 'accueil' ? 'navHome' : 'nav'}}">
             <div class="nav-wrapper col.s12">
@@ -66,7 +66,7 @@
 
     {% block navgerer %}{% endblock %}
     {% block body %}{% endblock %}
-    </body>
+    </body >
     <div style="clear: both;"></div>
     <footer>
         <div class="row ">
@@ -87,23 +87,26 @@
             <div class="col s12 m3 l3">
                 <h6>Contact</h6><br />
                 <div>Nicolas Noel</div>
-                <a href="mailto:contact.photorizz@gmail.com" target="_top">contact.photorizz@gmail.com</a>
+                <a href="mailto:contact.photorizz@gmail.com" target="_top">contact@photosportnormandy.fr</a>
                 <div>06.31.47.06.76</div>
-                <a href="{{ path('main') }}">Formulaire de contact</a>
+                <a href="{{ path('contact') }}">Formulaire de contact</a>
             </div>
             <div class="col s12 m3 l3">
                 <h6>Informations</h6><br />
                 <div>Site web développé par Mathis DELAUNAY</div>
                 <a href="mailto:delaunaymathis@yahoo.com" target="_top">delaunaymathis@yahoo.fr</a>
+                <div>Logo réalisé par Alexandre Dallant</div>
+                <a href="http://www.alexandre-dallant.com" target="new">www.alexandre-dallant.com</a>
             </div>
             <div class="col s12 m3 l3">
                 <h6>Reseaux sociaux</h6><br />
-                <a href="https://www.facebook.com/Photosportnormandy-2057705341112605/" class="facebook-footer"></a>
-                <a href="https://www.instagram.com/photosportnormandy/" class="instagram-footer"></a>
+                <a href="https://www.facebook.com/Photosportnormandy-2057705341112605/" target="_blank" class="facebook-footer"></a>
+                <a href="https://www.instagram.com/photosportnormandy/" target="_blank" class="instagram-footer"></a>
             </div>
         </div>
         <div class="row footer-copyright">
             <div class="center col s12 l12">© 2018 Photo Sport Normandy</div>
+            <a href="{{ path('cgv') }}" target="_new" class="center col s12 l12">Conditions générales de vente</a>
         </div>
     </footer>
 

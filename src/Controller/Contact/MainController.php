@@ -63,8 +63,8 @@ class MainController extends Controller {
             $data = $form->getData();
             $this->get('session')->getFlashBag()->add('success','Le message a bien été envoyé');
             $message = (new \Swift_Message('Contact photo sport normandy'))
-                ->setFrom('photosportnormandy@gmail.com')
-                ->setTo('photosportnormandy@gmail.com')
+                ->setFrom('no-reply@photosportnormandy.fr')
+                ->setTo('contact@photosportnormandy.fr')
                 ->setBody(
                     $this->renderView(
                         'emails/contact.html.twig',

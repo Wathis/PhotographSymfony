@@ -120,7 +120,8 @@ class GestionController extends Controller
                         'max' => '1',
                         'min' => '0.01',
                         'placeholder' => 'Ratio de taille',
-                        'class' => 'col l2 m2 s12 offset-l1 offset-m1 rangeInput contactInput browser-default'
+                        'oninput' => 'changeRatio(this)',
+                        'class' => 'col l2 m2 s11 rangeInput contactInput browser-default'
                     )
                 ))
             ->add('prix', IntegerType::class,

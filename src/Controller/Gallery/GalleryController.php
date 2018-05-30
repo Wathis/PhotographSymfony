@@ -78,7 +78,7 @@ class GalleryController extends Controller
         if (strpos($album->getCategory(),'protected') !== false) {
             if (isset($_GET["password"]) && !empty($_GET["password"])){
                 if ($album->getPassword() !== $_GET["password"]) {
-                    $this->get('session')->getFlashBag()->add('error','Mauvais mot de passe');
+                    $this->get('session')->getFlashBag()->add('error','Mot de passe invalide');
                     return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
                 }
             } else {
@@ -118,7 +118,7 @@ class GalleryController extends Controller
         if (strpos($album->getCategory(),'protected') !== false) {
             if (isset($_GET["password"]) && !empty($_GET["password"])){
                 if ($album->getPassword() !== $_GET["password"]) {
-                    $this->get('session')->getFlashBag()->add('error','Mauvais mot de passe');
+                    $this->get('session')->getFlashBag()->add('error','Mot de passe invalide');
                     return $this->redirectToRoute('passwordAlbum',array('category' => $category,'id' => $album->getId()));
                 }
             } else {
