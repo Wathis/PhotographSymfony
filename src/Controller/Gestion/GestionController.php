@@ -5,6 +5,7 @@ namespace App\Controller\Gestion;
 
 use App\Entity\Achat;
 use App\Entity\Album;
+use App\Entity\Carousel;
 use App\Entity\Client;
 use App\Entity\Format;
 use App\Entity\Personne;
@@ -12,9 +13,11 @@ use App\Entity\Photo;
 use App\Entity\Presse;
 use Sonata\CoreBundle\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,9 +26,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class GestionController extends Controller
 {
+
+    /**
+     * @Route("/gestion-site", name="gestion-site")
+     */
+    public function index() {
+        return $this->redirectToRoute('gestion-site-albums');
+    }
 
     /**
      * @Route("/gestion-site/album", name="gestion-site-albums")
@@ -378,6 +389,55 @@ class GestionController extends Controller
     }
 
     /**
+     * @Route("/gestion-site/profil", name="gestion-site-profil")
+     */
+    public function profil(UserPasswordEncoderInterface $passwordEncoder,Request $request) {
+
+        $user = $this->getUser();
+        $form = $this->createFormBuilder()
+            ->add('password', PasswordType::class,
+                array(
+                    'attr' => array(
+                        'required' => 'false',
+                        'placeholder' => 'Mot de passe',
+                        'class' => 'col l4 m4 offset-l4 offset-m4 s12 contactInput browser-default'
+                    )
+                ))
+            ->add('verification', PasswordType::class,
+                array(
+                    'attr' => array(
+                        'required' => 'false',
+                        'placeholder' => 'Verification',
+                        'class' => 'col l4 m4 offset-l4 offset-m4 s12 contactInput browser-default'
+                    )
+                ))
+            ->add('modifier', SubmitType::class, array(
+                'label' => 'Modifier',
+                'attr' => array(
+                    'class' => 'col l4 m4 offset-l4 offset-m4 s12 buttonGerer noInputStyle button buttonGreen')
+                ))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $info = $form->getData();
+            if ($info["password"] === $info["verification"]) {
+                $user->setPassword($passwordEncoder->encodePassword($user, $info["password"]));
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+                $this->get('session')->getFlashBag()->add('success',"Profil modifié");
+            } else {
+                $this->get('session')->getFlashBag()->add('error',"Les mot de passe ne sont pas identiques");
+            }
+        }
+
+        return $this->render('gestion/profil.html.twig',array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
      * @Route("/gestion-site/presse", name="gestion-site-presse")
      */
     public function presse(Request $request) {
@@ -412,7 +472,6 @@ class GestionController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $presse = $form->getData();
             $file = $presse->getPhoto();
-            var_dump($presse->getPhoto());
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $presse->setPhoto($fileName);
             $file->move(
@@ -432,4 +491,65 @@ class GestionController extends Controller
         ));
     }
 
+    /**
+     * @Route("/gestion-site/carousel", name="gestion-site-carousel")
+     */
+    public function carousel(Request $request) {
+
+        $carousels = $this->getDoctrine()
+            ->getRepository(Carousel::class)
+            ->findAll();
+
+        $carousel = new Carousel();
+
+        $form = $this->createFormBuilder($carousel)
+            ->add('photo', FileType::class,
+                array(
+                    'label' => false,
+                    'attr' => array(
+                        'class' => 'choisirPhoto',
+                        'id' => 'uploadPhotoId',
+                        'onchange'=> 'getFileName("form_photo")'
+                    )
+                ))
+            ->add('add', SubmitType::class, array('label' => 'Ajouter','attr' => array('class' => 'col l2 m2 offset-l1 offset-m1 s12 buttonGerer noInputStyle button buttonGreen')))
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $carousel = $form->getData();
+            $file = $carousel->getPhoto();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $carousel->setPhoto($fileName);
+            $file->move(
+                $this->getParameter('carousel_directory'),
+                $fileName
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($carousel);
+            $entityManager->flush();
+            $this->get('session')->getFlashBag()->add('success',"Photo carousel ajoutée");
+            return $this->redirectToRoute('gestion-site-carousel');
+        }
+
+        return $this->render('gestion/carousel.html.twig',array(
+            'form' => $form->createView(),
+            'carousels' => $carousels
+        ));
+    }
+
+    /**
+     * @Route("/gestion-site/carousel/delete/{id}", name="deleteCarousel")
+     */
+    public function deleteCarousel(Carousel $carousel) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($carousel);
+        $filePath = $this->getParameter("carousel_directory") . DIRECTORY_SEPARATOR . $carousel->getPhoto();
+        if(file_exists($filePath)) {
+            unlink($filePath);
+            $this->get('session')->getFlashBag()->add('success','Photo supprimée');
+        }
+        $entityManager->flush();
+        return $this->redirectToRoute('gestion-site-carousel');
+    }
 }

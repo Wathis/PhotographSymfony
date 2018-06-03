@@ -10,13 +10,12 @@
 {% block body %}
 
     <div class="slideshow-container">
-        <div class="carousel-background fade">
-            <img class="image-carousel" src="{{ asset('img/backgroundSnow.png') }}" style="width:100%">
-        </div>
 
-        <div class="carousel-background fade">
-            <img class="image-carousel" src="{{ asset('img/backgroundRoute.jpg') }}" style="width:100%">
-        </div>
+        {% for carousel in carousels %}
+            <div class="carousel-background fade">
+                <img class="image-carousel" src="{{ asset('uploads/carousel/' ~ carousel.photo) }}" style="width:100%">
+            </div>
+        {% endfor %}
     </div>
     <div class="container">
         <div class="firstPage">

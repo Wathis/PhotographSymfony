@@ -1,0 +1,23 @@
+{% extends 'gestion/nav.html.twig' %}
+
+{% block body %}
+    <div style="min-height:100vh" class="container content gestion">
+        <h3 style="text-align: center">Mon profil</h3>
+
+        {{ form_errors(form) }}
+        {{ form_start(form) }}
+        <div class="center-align" style="margin-bottom: 5vh;">
+            <div class="row">
+                {{ form_widget(form.password) }}
+            </div>
+            <div class="row">
+                {{ form_widget(form.verification) }}
+            </div>
+            <div class="row">
+                {{ form_widget(form.modifier) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

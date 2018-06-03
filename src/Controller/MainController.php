@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Carousel;
 use FOS\UserBundle\Mailer\Mailer;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -43,6 +44,7 @@ class MainController extends Controller
      */
     public function accueil(Request $request)
     {
+        $carousels = $this->getDoctrine()->getManager()->getRepository(Carousel::class)->findAll();
         $form = $this->createFormBuilder()
             ->add('info',TextType::class,array(
                 'label' => false,
@@ -67,7 +69,8 @@ class MainController extends Controller
 
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'carousels' => $carousels
         ]);
     }
 
