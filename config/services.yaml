@@ -7,8 +7,8 @@ parameters:
     presse_directory: '%kernel.project_dir%/public/uploads/presse'
     img_directory: '%kernel.project_dir%/public/img'
     watermarked_photos_directory: '%kernel.project_dir%/public/uploads/watermarked'
-    paypal_secret: EEmg7V5iblt3e-40JFUCjrlqNLp9Sf-zX8QhYFGR5zzrvMkH5ezGy9cA5ZN9r4OimTwU8U3qkwQfYfrJ
-    paypal_api_key: AWmo9bzl9_7YFjbCQjxw_OBYPj1f5IOWlpTrvoegTyovMzYWkoG-TprGbI5m7PZEQfQSArtcwsyS7AY4
+    paypal_secret: EA8MAAZbD-QAsWaFOApZLemvRp22ic0TBq-NM4x6tvzsTg3_umSBTv0XTOXJU23qWdGFjxcUCukie2CI
+    paypal_api_key: AT4qJsVSJ5ZcRz3eXvtKBlAAgn9_ZJTbay0B4KUPC8eyAVka7SIb0ueYMuiBYGK7JYpR9WK-nXC9N6vB
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -127,6 +127,11 @@ class PaymentController extends Controller
                 $this->getParameter('paypal_secret')
             )
         );
+        $apiContext->setConfig(
+            array(
+                'mode' => 'live'
+              )
+        );
         if (!(isset($_GET["paymentId"]) && isset($_GET["PayerID"]))) {
             throw new \Exception('Quelque chose s\' est mal passé !');
         }
@@ -210,7 +215,11 @@ class PaymentController extends Controller
                 $this->getParameter('paypal_secret')
             )
         );
-
+        $apiContext->setConfig(
+            array(
+                'mode' => 'live'
+            )
+        );
         $payment = new Payment();
         $payment->setIntent("sale");
         $redirectUrls = new RedirectUrls();
