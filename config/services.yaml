@@ -7,6 +7,12 @@ parameters:
     presse_directory: '%kernel.project_dir%/public/uploads/presse'
     carousel_directory: '%kernel.project_dir%/public/uploads/carousel'
     img_directory: '%kernel.project_dir%/public/img'
+    mailer_transport:  smtp
+    mailer_auth_mode:  login
+    mailer_host:       SSL0.OVH.NET
+    mailer_port:       465
+    mailer_user:       no-reply@photosportnormandy.fr
+    mailer_password:   yv6tFMKi748S
     watermarked_photos_directory: '%kernel.project_dir%/public/uploads/watermarked'
     paypal_secret: EA8MAAZbD-QAsWaFOApZLemvRp22ic0TBq-NM4x6tvzsTg3_umSBTv0XTOXJU23qWdGFjxcUCukie2CI
     paypal_api_key: AT4qJsVSJ5ZcRz3eXvtKBlAAgn9_ZJTbay0B4KUPC8eyAVka7SIb0ueYMuiBYGK7JYpR9WK-nXC9N6vB
